@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -25,12 +28,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.dangbinh.moneymanagement.R;
 import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
+import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.dangbinh.moneymanagement.utils.UserDataGrabberUtils;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -52,12 +58,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button buttonRegister;
     private TextView textViewForgotPass;
     private Button buttonEmailSignIn;
+    private CheckBox cbRememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set up the login form.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        cbRememberMe = findViewById(R.id.checkbox_remember_me);
 
         // Email Field
         autoCompleteEmail = findViewById(R.id.edit_text_email);
@@ -90,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textViewForgotPass.setOnClickListener(this);
 
         populateAutoComplete();
+        autoLogin();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -185,15 +194,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             cancel = true;
         }
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+            // There was an error; don't attempt login and focus the first form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
+            if (cbRememberMe.isChecked()) {
+                SharedPreferences.Editor editor = getSharedPreferences(Account.class.getName(), Context.MODE_PRIVATE).edit();
+                editor.putString(Account.EMAIL, email);
+                editor.putString(Account.PASSWORD, password);
+                editor.commit();
+            }
             TaskRunner.run(new UserLoginTask(email, password));
         }
+    }
+
+    private boolean autoLogin() {
+        SharedPreferences preferences = getSharedPreferences(Account.class.getName(), Context.MODE_PRIVATE);
+        String email = preferences.getString(Account.EMAIL, "");
+        String password = preferences.getString(Account.PASSWORD, "");
+        return TaskRunner.run(new UserLoginTask(email, password));
     }
 
     private boolean isEmailValid(String email) {
@@ -247,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask implements Callable<Void> {
+    public class UserLoginTask implements Callable<Boolean> {
         Account account;
 
         UserLoginTask(String email, String password) {
@@ -257,21 +275,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         @Override
-        public Void call() {
+        public Boolean call() {
+            // Show a progress spinner, and kick off a background task to perform the user login attempt.
+            AtomicBoolean result = new AtomicBoolean(false);
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            mAuth.signInWithEmailAndPassword(account.getEmail(), account.getPassword())
-                    .addOnCompleteListener(LoginActivity.this, task -> {
-                        if (task.isSuccessful()) {
-                            Intent view = new Intent(LoginActivity.this, TransactionsViewActivity.class);
-                            view.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            Toast.makeText(getApplicationContext(), "User Successfully logged with email " + task.getResult().getUser().getEmail(), Toast.LENGTH_LONG).show();
-                            startActivity(view);
-                        } else {
-                            showProgress(false);
-                            Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-            return null;
+            if (isEmailValid(account.getEmail()) && isPasswordValid(account.getPassword())) {
+                TaskRunner.runOnUiThread(LoginActivity.this, () -> UiUtils.showProgress(loginFormView, progressBar, true, getResources().getInteger(android.R.integer.config_shortAnimTime)));
+                mAuth.signInWithEmailAndPassword(account.getEmail(), account.getPassword())
+                        .addOnCompleteListener(LoginActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                result.set(true);
+                                Intent view = new Intent(LoginActivity.this, TransactionsViewActivity.class);
+                                view.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Toast.makeText(getApplicationContext(), "User Successfully logged with email " + task.getResult().getUser().getEmail(), Toast.LENGTH_LONG).show();
+                                startActivity(view);
+                            } else {
+                                TaskRunner.runOnUiThread(LoginActivity.this, () -> UiUtils.showProgress(loginFormView, progressBar, false, getResources().getInteger(android.R.integer.config_shortAnimTime)));
+                                Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                result.set(false);
+                            }
+                        });
+            } else {
+                TaskRunner.runOnUiThread(LoginActivity.this, () -> UiUtils.showProgress(loginFormView, progressBar, false, getResources().getInteger(android.R.integer.config_shortAnimTime)));
+                result.set(false);
+            }
+            return result.get();
         }
     }
 }
