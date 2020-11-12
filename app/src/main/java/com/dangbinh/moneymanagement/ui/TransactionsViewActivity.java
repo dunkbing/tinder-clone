@@ -33,7 +33,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dangbinh.moneymanagement.R;
+import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.models.Transaction;
+import com.dangbinh.moneymanagement.utils.Constants;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -178,16 +180,20 @@ public class TransactionsViewActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.nav_gallery) {
-
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+            case R.id.nav_gallery:
+                return true;
+            case R.id.action_sign_out:
+                Constants.AUTH_INSTANCE.signOut();
+                Intent i = new Intent(this, LoginActivity.class);
+                i.putExtra(Account.LOGGED_OUT, true);
+                startActivity(i);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
