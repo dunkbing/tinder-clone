@@ -5,9 +5,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 @Entity(tableName = "accounts")
 public class Account {
     @PrimaryKey(autoGenerate = true)
@@ -23,6 +20,7 @@ public class Account {
     // Constant
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
+    public static final String SIGNED_OUT = "signed out";
 
     public Account() {}
     public Account(String uid, String email, String password) {
