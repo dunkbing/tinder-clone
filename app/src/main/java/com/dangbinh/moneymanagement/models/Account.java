@@ -7,7 +7,8 @@ public class Account {
     private String uid;
     private String email;
     private String password;
-    public final static FirebaseUser CURRENT_USER = FirebaseAuth.getInstance().getCurrentUser();
+    public final static FirebaseAuth AUTH_INSTANCE = FirebaseAuth.getInstance();
+    public final static FirebaseUser CURRENT_USER = AUTH_INSTANCE.getCurrentUser();
 
     public Account() {}
     public Account(String uid, String email, String password) {

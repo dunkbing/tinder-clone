@@ -1,59 +1,52 @@
 package com.dangbinh.moneymanagement.models;
 
-import com.dangbinh.moneymanagement.utils.Constants;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by dangbinh on 9/11/2020.
  */
 public class Transaction {
+    private String transId;
     private double amount;
     private String category;
     private String note;
     private String date;
     private Map<String, String> location;
-    SimpleDateFormat sdf;
-    private Date current_date;
-    private String user_name;
+    private SimpleDateFormat sdf;
+    private Date currentDate;
+    private String username;
 
     public static String FIREBASE_URL = "https://managemymoney.firebaseio.com/";
-    // static Firebase ref = new Firebase(Constants.FIREBASE_URL);
+    static DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
     public Transaction() {
     }
 
-
-    public Transaction(double amount, String category, String note, String date, Map location) {
+    public Transaction(String transId, double amount, String category, String note, String date, Map location) {
+        this.transId = transId;
         this.amount = amount;
         this.category = category;
         this.note = note;
         this.date = date;
         this.location = location;
-        this.user_name = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.username = Account.CURRENT_USER.getDisplayName();
     }
 
-    public boolean postTransaction() {
-        // Firebase trans_ref = ref.child("Transactions/" + ref.getAuth().getUid());
-        // open request
-        // send data
-        // trans_ref.push().setValue(this);
-        // uid = trans_ref.getKey();
-        return true;
-    }
-
-    public ArrayList<Transaction> getAllTransactions(Person p) {
+    public ArrayList<Transaction> getAllTransactions(Account account) {
         // Populate to recyclerview
-        ArrayList<Transaction> all_trans = new ArrayList<>();
-
-        return all_trans;
+        ArrayList<Transaction> allTrans = new ArrayList<>();
+        return allTrans;
     }
 
-    public ArrayList<Transaction> getAllTransByCategory(Person p) {
+    public ArrayList<Transaction> getAllTransByCategory(Account account) {
         // Populate to graph
         ArrayList<Transaction> all_trans = new ArrayList<>();
 
@@ -108,20 +101,20 @@ public class Transaction {
         this.sdf = sdf;
     }
 
-    public Date getCurrent_date() {
-        return current_date;
+    public Date getCurrentDate() {
+        return currentDate;
     }
 
-    public void setCurrent_date(Date current_date) {
-        this.current_date = current_date;
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public static String getFirebaseUrl() {
@@ -132,27 +125,59 @@ public class Transaction {
         FIREBASE_URL = firebaseUrl;
     }
 
-    /*public static Firebase getRef() {
-        return ref;
-    }*/
+    public static DatabaseReference getTransRef() {
+        return FirebaseDatabase.getInstance().getReference(Account.CURRENT_USER.getUid());
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("amount", amount);
+        result.put("category", category);
+        result.put("date", date);
+        result.put("location", location);
+        result.put("note", note);
+        result.put("username", username);
+
+        return result;
+    }
+
 
     /*public static void setRef(Firebase ref) {
         com.dangbinh.moneymanagement.Application.Transaction.ref = ref;
     }*/
 
-    /*public void modify(String s) {
+    public boolean postTransaction() {
+        // Firebase trans_ref = ref.child("Transactions/" + ref.getAuth().getUid());
+        // open request
+        // send data
+        // trans_ref.push().setValue(this);
+        // uid = trans_ref.getKey();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Account.CURRENT_USER.getUid());
+        ref.child("transactions").push().setValue(this);
+        return true;
+    }
+
+    public boolean modify(String transId) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Account.CURRENT_USER.getUid());
+        Map<String, Object> trans = this.toMap();
+        Map<String, Object> transUpdate = new HashMap<>();
+        transUpdate.put("/"+transId+"/", trans);
+        ref.child("transactions").updateChildren(transUpdate);
+        return true;
+    }
+
+    public void remove(String s) {
         if (!s.equals(null)) {
-            Firebase trans_ref = new Firebase(s);
-
-            trans_ref.setValue(this);
+            getTransRef().child("transactions").child(s).removeValue();
         }
-    }*/
+    }
 
-    /*public void remove(String s) {
-        if (!s.equals(null)) {
-            Firebase trans_ref = new Firebase(s);
+    public String getTransId() {
+        return transId;
+    }
 
-            trans_ref.removeValue();
-        }
-    }*/
+    public void setTransId(String transId) {
+        this.transId = transId;
+    }
 }
