@@ -11,13 +11,17 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,88 +32,70 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dangbinh.moneymanagement.models.Transaction;
 import com.dangbinh.moneymanagement.R;
+import com.dangbinh.moneymanagement.models.Transaction;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.Query;
 
-public class TransactionsView extends AppCompatActivity
+import java.util.Objects;
+
+public class TransactionsViewActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    RecyclerView recycleview;
+    private static final String TAG = "TransactionsViewActivit";
+    RecyclerView recycleView;
+    FirebaseRecyclerAdapter<Transaction, TransactionViewHolder> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(com.dangbinh.moneymanagement.ui.TransactionsView.this, com.dangbinh.moneymanagement.ui.AddTransactionActivity.class);
-                startActivity(i);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //      .setAction("Action", null).show();
-            }
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent i = new Intent(TransactionsViewActivity.this, AddTransactionActivity.class);
+            startActivity(i);
+            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            //      .setAction("Action", null).show();
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String FIREBASE_URL = "https://managemymoney.firebaseio.com/";
-        // Firebase trans_ref = new Firebase(FIREBASE_URL);
-        // Firebase ref = trans_ref.child("Transactions/" + trans_ref.getAuth().getUid());
+        recycleView = findViewById(R.id.recycler_view);
+        recycleView.setHasFixedSize(true);
+        recycleView.setItemAnimator(new DefaultItemAnimator());
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+        recycleView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        recycleview = (RecyclerView) findViewById(R.id.recycler_view);
-        recycleview.setHasFixedSize(true);
-        recycleview.setItemAnimator(new DefaultItemAnimator());
-        recycleview.setLayoutManager(new LinearLayoutManager(this));
-        recycleview.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-
-        /*final FirebaseRecyclerAdapter<Transaction, TransactionViewHolder> fadapter = new FirebaseRecyclerAdapter<Transaction, TransactionViewHolder>(Transaction.class, R.layout.recycler_layout, TransactionViewHolder.class, ref) {
-
-            @Override
-            public void populateViewHolder(TransactionViewHolder tv, Transaction t, int position) {
-
-                tv.nameText2.setText("$" + Double.toString(t.getAmount()), TextView.BufferType.NORMAL);
-                tv.nameText4.setText(t.getCategory(), TextView.BufferType.NORMAL);
-                tv.nameTextHidden.setText(String.valueOf(this.getRef(position)), TextView.BufferType.NORMAL);
-                setImageToHolder(t.getCategory(), tv.iv);
-            }
-
-            @Override
-            public Transaction getItem(int position) {
-                return super.getItem(position);
-            }
-
-        };*/
-
-        // recycleview.setAdapter(fadapter);
-        /*recycleview.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recycleview, new ClickListener() {
+        fetch();
+        recycleView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recycleView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Transaction t = fadapter.getItem(position);
+                Transaction t = adapter.getItem(position);
                 //t.getpos();
 
-                //Toast.makeText(getApplicationContext(),   t.getAmount()+ " is selected!", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(com.dangbinh.moneymanagement.Ui.TransactionsView.this, com.dangbinh.moneymanagement.Ui.AddTransactionActivity.class);
+                Toast.makeText(getApplicationContext(),   t.getAmount()+ " is selected!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(TransactionsViewActivity.this, com.dangbinh.moneymanagement.ui.AddTransactionActivity.class);
+                i.putExtra("transId", ((TextView) view.findViewById(R.id.hidden_trans_id)).getText().toString());
                 i.putExtra("amount", Double.toString(t.getAmount()));
                 i.putExtra("category", t.getCategory());
                 i.putExtra("note", t.getNote());
                 i.putExtra("date", t.getDate());
                 //i.putExtra("location", t.getLocation().toString());
                 //i.putExtra("uid", ((TextView)view.findViewById(R.id.hidden)).getText().toString());
-                i.putExtra("pos", ((TextView) view.findViewById(R.id.hidden)).getText().toString());
+                i.putExtra("position", ((TextView) view.findViewById(R.id.hidden_position)).getText().toString());
                 i.putExtra("state", "edit");
                 startActivity(i);
             }
@@ -118,7 +104,56 @@ public class TransactionsView extends AppCompatActivity
             public void onLongClick(View view, int position) {
 
             }
-        }));*/
+        }));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    private void fetch() {
+        Query query = Transaction.getTransRef()
+                .child("transactions");
+        Log.d(TAG, query.getRef().getKey());
+        FirebaseRecyclerOptions<Transaction> options = new FirebaseRecyclerOptions.Builder<Transaction>()
+                .setQuery(query, snapshot -> {
+                    String key = snapshot.getKey();
+                    return new Transaction(key,
+                            Double.parseDouble(snapshot.child("amount").getValue().toString()),
+                            snapshot.child("category").getValue().toString(),
+                            snapshot.child("note").getValue().toString(),
+                            snapshot.child("date").getValue().toString(),
+                            null);
+                })
+                .build();
+        adapter = new FirebaseRecyclerAdapter<Transaction, TransactionViewHolder>(options) {
+            @NonNull
+            @Override
+            public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.recycler_layout, parent, false);
+                return new TransactionViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull TransactionViewHolder holder, int position, @NonNull Transaction model) {
+                Log.d(TAG, model.getAmount()+"");
+                holder.setTextViewAmount("$" + Objects.requireNonNull(model).getAmount());
+                holder.setTextViewCate(model.getCategory());
+                holder.setHiddenPosition(String.valueOf(this.getRef(position)));
+                holder.setHiddenTransId(model.getTransId());
+                setImageToHolder(model.getCategory(), holder.imageView);
+            }
+        };
+        recycleView.setAdapter(adapter);
     }
 
     @Override
@@ -165,7 +200,7 @@ public class TransactionsView extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            Intent i = new Intent(com.dangbinh.moneymanagement.ui.TransactionsView.this, TaxEstimatorActivity.class);
+            Intent i = new Intent(TransactionsViewActivity.this, TaxEstimatorActivity.class);
             startActivity(i);
         }
 //        } else if (id == R.id.nav_manage) {
@@ -184,19 +219,36 @@ public class TransactionsView extends AppCompatActivity
 
     public static class TransactionViewHolder extends RecyclerView.ViewHolder {
 
-
-        TextView nameText2;
-        TextView nameText4;
-        TextView nameTextHidden;
-        ImageView iv;
-
+        TextView textViewAmount;
+        TextView textViewCate;
+        TextView hiddenPosition;
+        TextView hiddenTransId;
+        ImageView imageView;
 
         public TransactionViewHolder(View itemView) {
             super(itemView);
-            nameText2 = (TextView) itemView.findViewById(R.id.amt);
-            nameText4 = (TextView) itemView.findViewById(R.id.cat);
-            nameTextHidden = (TextView) itemView.findViewById(R.id.hidden);
-            iv = (ImageView) itemView.findViewById(R.id.cat_img);
+            Log.d(TAG, itemView.findViewById(R.id.text_view_amount) == null ? "null" : "not null");
+            textViewAmount = itemView.findViewById(R.id.text_view_amount);
+            textViewCate = itemView.findViewById(R.id.text_view_cate);
+            hiddenPosition = itemView.findViewById(R.id.hidden_position);
+            hiddenTransId = itemView.findViewById(R.id.hidden_trans_id);
+            imageView = itemView.findViewById(R.id.cat_img);
+        }
+
+        public void setTextViewAmount(String string) {
+            textViewAmount.setText(string, TextView.BufferType.NORMAL);
+        }
+
+        public void setTextViewCate(String string) {
+            textViewCate.setText(string, TextView.BufferType.NORMAL);
+        }
+
+        public void setHiddenPosition(String string) {
+            hiddenPosition.setText(string, TextView.BufferType.NORMAL);
+        }
+
+        public void setHiddenTransId(String string) {
+            hiddenTransId.setText(string);
         }
     }
 
@@ -209,9 +261,9 @@ public class TransactionsView extends AppCompatActivity
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
-        private com.dangbinh.moneymanagement.ui.TransactionsView.ClickListener clickListener;
+        private TransactionsViewActivity.ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final com.dangbinh.moneymanagement.ui.TransactionsView.ClickListener clickListener) {
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final TransactionsViewActivity.ClickListener clickListener) {
             this.clickListener = clickListener;
             gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override

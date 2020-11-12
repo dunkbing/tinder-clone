@@ -35,7 +35,7 @@ public class CategorySelectionMainActivity extends AppCompatActivity implements 
         viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -52,7 +52,7 @@ public class CategorySelectionMainActivity extends AppCompatActivity implements 
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
+            super(manager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override
@@ -76,8 +76,8 @@ public class CategorySelectionMainActivity extends AppCompatActivity implements 
         }
     }
 
-    public void getSelectedItem(String msg) {
-        Log.d("gotitem", msg);
+    public void selectedItem(String msg) {
+        Log.d("got item", msg);
         //Toast.makeText(getApplicationContext(),"InActivity got data"+msg,Toast.LENGTH_LONG).show();
         Intent return_intent = new Intent();
         if (msg != null) {
