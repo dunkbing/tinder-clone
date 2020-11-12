@@ -8,7 +8,7 @@
     android:paddingLeft="1dp"
     android:paddingRight="1dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.TransactionsView"
+    tools:context=".ui.TransactionsViewActivity"
     tools:showIn="@layout/app_bar_transactions_view">
 
     <androidx.recyclerview.widget.RecyclerView

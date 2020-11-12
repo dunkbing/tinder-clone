@@ -17,7 +17,7 @@
         android:layout_height="50sp" />
 
     <TextView
-        android:id="@+id/amt"
+        android:id="@+id/text_view_amount"
         android:textColor="@color/colorAccent"
         android:textSize="18dp"
         android:textStyle="bold"
@@ -28,7 +28,7 @@
 
     <TextView
         android:text="asdmkadmsamsd"
-        android:id="@+id/cat"
+        android:id="@+id/text_view_cate"
         android:textSize="20dp"
         android:textColor="@color/colorAccent"
         android:layout_width="wrap_content"
@@ -36,9 +36,16 @@
         android:layout_marginLeft="@android:dimen/notification_large_icon_width"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/hidden_position"
+        android:textColor="@color/colorAccent"
+        android:layout_width="0sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@android:dimen/notification_large_icon_width"
+        android:layout_height="0sp" />
 
     <TextView
-        android:id="@+id/hidden"
+        android:id="@+id/hidden_trans_id"
         android:textColor="@color/colorAccent"
         android:layout_width="0sp"
         android:layout_alignParentTop="true"
