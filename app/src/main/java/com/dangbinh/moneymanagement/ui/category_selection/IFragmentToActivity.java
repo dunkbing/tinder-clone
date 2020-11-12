@@ -4,5 +4,5 @@ package com.dangbinh.moneymanagement.ui.category_selection;
  * Created by dangbinh on 9/11/2020.
  */
 public interface IFragmentToActivity {
-    void getSelectedItem(String msg);
+    void selectedItem(String msg);
 }

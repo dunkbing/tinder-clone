@@ -15,12 +15,18 @@ public class DialogContainer {
     AlertDialog alertDialog;
 
     public DialogContainer(final Context ctx, int message) {
-
         alertDialog = new AlertDialog.Builder(ctx).create();
-        // Setting Dialog Title
-        alertDialog.setTitle("Error");
-        // Setting Dialog Message
         alertDialog.setMessage(ctx.getString(message));
+    }
+
+    public void show() {
+        alertDialog.show();
+    }
+
+    public void send() {
+        // Setting Dialog Title
+        alertDialog.setTitle("email sent");
+        // Setting Dialog Message
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.password_button);
         // Setting OK Button
@@ -30,10 +36,7 @@ public class DialogContainer {
             }
         });
         // Showing Alert Message
-    }
-
-    public void show() {
-        alertDialog.show();
+        show();
     }
 }
 
