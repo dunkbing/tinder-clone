@@ -58,15 +58,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/default_gap" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/trans_location"
-            android:hint="Add a Location"
-            android:drawablePadding="@dimen/default_gap"
-            android:layout_marginTop="@dimen/default_gap"
-            android:inputType="none" />
-
         <Button
             android:layout_marginTop="16sp"
             android:layout_width="match_parent"

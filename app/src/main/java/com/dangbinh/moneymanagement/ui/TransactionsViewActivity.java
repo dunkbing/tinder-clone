@@ -130,8 +130,7 @@ public class TransactionsViewActivity extends AppCompatActivity
                             Double.parseDouble(snapshot.child("amount").getValue().toString()),
                             snapshot.child("category").getValue().toString(),
                             snapshot.child("note").getValue().toString(),
-                            snapshot.child("date").getValue().toString(),
-                            null);
+                            snapshot.child("date").getValue().toString());
                 })
                 .build();
         adapter = new FirebaseRecyclerAdapter<Transaction, TransactionViewHolder>(options) {

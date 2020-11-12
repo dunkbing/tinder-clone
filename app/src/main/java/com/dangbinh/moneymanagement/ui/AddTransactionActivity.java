@@ -46,7 +46,6 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     private EditText editTextDisplayDate;
     private Handler handler = new Handler();
     private EditText editTextNote;
-    private EditText editTextLocation;
     private String transId = null;
     private String query;
     private Button buttonDelete;
@@ -59,7 +58,6 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_transaction);
         query = null;
-        editTextLocation = findViewById(R.id.trans_location);
         editTextAmount = findViewById(R.id.trans_amt);
         editTextCateSelection = findViewById(R.id.category_selection);
         editTextCateSelection.setOnFocusChangeListener((v, hasFocus) -> {
@@ -88,7 +86,6 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
             editTextCateSelection.setText(i.getExtras().getString("category"));
             editTextNote.setText(i.getExtras().getString("note"));
             editTextDisplayDate.setText(i.getExtras().getString("date"));
-            editTextLocation.setText(i.getExtras().getString("location"));
             editTextAmount.setText(i.getExtras().getString("amount"));
         }
     }
@@ -136,19 +133,11 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
                     LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
                     boolean result = false;
                     if (transId != null) {
-                        //handler.post(this);
-                        Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString(), null);
+                        Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString());
                         t.modify(transId);
                         Log.d("update transaction", transId);
                     } else {
-                        Map location = new HashMap();
-                        double lon = 00;//location.getLongitude();
-                        double lat = 00;//location.getLatitude();
-                        location.put("lat", Double.toString(lat));
-                        location.put("lon", Double.toString(lon));
-
-                        // handler.post(this);
-                        Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString(), location);
+                        Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString());
                         result = t.postTransaction();
                     }
                     return result;
@@ -203,7 +192,7 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
 
     public void deleteEntry() {
         if (transId != null) {
-            Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString(), null);
+            Transaction t = new Transaction();
             t.remove(transId);
         }
         finish();
