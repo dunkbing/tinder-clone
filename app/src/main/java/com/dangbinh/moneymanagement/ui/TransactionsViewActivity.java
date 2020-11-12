@@ -2,6 +2,7 @@ package com.dangbinh.moneymanagement.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -36,6 +37,7 @@ import com.dangbinh.moneymanagement.R;
 import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.models.Transaction;
 import com.dangbinh.moneymanagement.utils.Constants;
+import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -159,11 +161,15 @@ public class TransactionsViewActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Constants.EXIT, true);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -185,15 +191,20 @@ public class TransactionsViewActivity extends AppCompatActivity
             case R.id.nav_gallery:
                 return true;
             case R.id.action_sign_out:
-                Constants.AUTH_INSTANCE.signOut();
-                Intent i = new Intent(this, LoginActivity.class);
-                i.putExtra(Account.LOGGED_OUT, true);
-                startActivity(i);
-                finish();
+                signOut();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void signOut() {
+        Constants.AUTH_INSTANCE.signOut();
+        UiUtils.clearSharePref(this, Account.class.getName());
+        Intent i = new Intent(this, LoginActivity.class);
+        i.putExtra(Account.LOGGED_OUT, true);
+        startActivity(i);
+        finish();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -220,7 +231,6 @@ public class TransactionsViewActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     public static class TransactionViewHolder extends RecyclerView.ViewHolder {
 

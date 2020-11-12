@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dangbinh.moneymanagement.R;
 import com.dangbinh.moneymanagement.models.Account;
+import com.dangbinh.moneymanagement.utils.Constants;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
 import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.dangbinh.moneymanagement.utils.UserDataGrabberUtils;
@@ -65,6 +66,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Set up the login form.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Intent i = getIntent();
+        if (i.getBooleanExtra(Constants.EXIT, false)) {
+            finish();
+            return;
+        }
         cbRememberMe = findViewById(R.id.checkbox_remember_me);
 
         // Email Field
@@ -98,7 +104,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textViewForgotPass.setOnClickListener(this);
 
         populateAutoComplete();
-        autoLogin();
+        if (!i.getBooleanExtra(Account.LOGGED_OUT, false)) {
+            autoLogin();
+        }
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -158,6 +166,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -197,12 +210,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // There was an error; don't attempt login and focus the first form field with an error.
             focusView.requestFocus();
         } else {
+            SharedPreferences.Editor editor = getSharedPreferences(Account.class.getName(), Context.MODE_PRIVATE).edit();
             if (cbRememberMe.isChecked()) {
-                SharedPreferences.Editor editor = getSharedPreferences(Account.class.getName(), Context.MODE_PRIVATE).edit();
                 editor.putString(Account.EMAIL, email);
                 editor.putString(Account.PASSWORD, password);
-                editor.commit();
+            } else {
+                editor.clear();
             }
+            editor.commit();
             TaskRunner.run(new UserLoginTask(email, password));
         }
     }
