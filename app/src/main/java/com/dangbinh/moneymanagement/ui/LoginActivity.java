@@ -31,7 +31,6 @@ import com.dangbinh.moneymanagement.utils.Constants;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
 import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.dangbinh.moneymanagement.utils.UserDataGrabberUtils;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -104,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textViewForgotPass.setOnClickListener(this);
 
         populateAutoComplete();
-        if (!i.getBooleanExtra(Account.LOGGED_OUT, false)) {
+        if (!i.getBooleanExtra(Account.SIGNED_OUT, false)) {
             autoLogin();
         }
     }

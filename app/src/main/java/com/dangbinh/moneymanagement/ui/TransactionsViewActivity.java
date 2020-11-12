@@ -2,7 +2,6 @@ package com.dangbinh.moneymanagement.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -202,7 +201,7 @@ public class TransactionsViewActivity extends AppCompatActivity
         Constants.AUTH_INSTANCE.signOut();
         UiUtils.clearSharePref(this, Account.class.getName());
         Intent i = new Intent(this, LoginActivity.class);
-        i.putExtra(Account.LOGGED_OUT, true);
+        i.putExtra(Account.SIGNED_OUT, true);
         startActivity(i);
         finish();
     }
