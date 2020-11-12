@@ -28,7 +28,7 @@
                 android:value="com.dangbinh.moneymanagement.ui.LoginActivity" />
         </activity>
         <activity
-            android:name="com.dangbinh.moneymanagement.ui.ForgotPassword"
+            android:name="com.dangbinh.moneymanagement.ui.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_pass"
             android:parentActivityName="com.dangbinh.moneymanagement.ui.LoginActivity">
             <meta-data
@@ -36,7 +36,7 @@
                 android:value="com.dangbinh.moneymanagement.ui.LoginActivity" />
         </activity>
         <activity
-            android:name="com.dangbinh.moneymanagement.ui.TransactionsView"
+            android:name="com.dangbinh.moneymanagement.ui.TransactionsViewActivity"
             android:label="@string/title_activity_transcations_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
