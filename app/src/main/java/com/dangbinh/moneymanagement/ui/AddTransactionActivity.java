@@ -22,12 +22,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.dangbinh.moneymanagement.models.Transaction;
 import com.dangbinh.moneymanagement.R;
 import com.dangbinh.moneymanagement.ui.category_selection.CategorySelectionMainActivity;
+import com.dangbinh.moneymanagement.utils.TaskRunner;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -35,84 +37,71 @@ import java.util.Map;
 
 public class AddTransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    EditText amt;
-    int month;
-    EditText cat_selection;
+    private EditText editTextAmount;
+    private int month;
+    private EditText editTextCateSelection;
+    private DatePicker datePicker;
+    private EditText editTextDisplayDate;
+    private Handler handler = new Handler();
+    private EditText editTextNote;
+    private EditText editTextLocation;
+    private String transId = null;
+    private String query;
+    private Button buttonDestruct;
     public static final String PARENT_CLASS_SOURCE = "com.dangbinh.moneymanagement.ui.AddTransactionActivity.java";
     public static final String TITLE = "Amount";
-    DatePicker datePicker;
-    EditText displayDate;
-    Handler handler = new Handler();
-    EditText note;
-    EditText loc;
-    boolean status_flag = false;
-    String query;
-    Button destruct;
+    private static final int CATEGORY_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_transaction);
         query = null;
-        loc = findViewById(R.id.trans_location);
-        amt = findViewById(R.id.trans_amt);
-        cat_selection = (EditText) findViewById(R.id.category_selection);
-        cat_selection.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    Intent i = new Intent(com.dangbinh.moneymanagement.ui.AddTransactionActivity.this, CategorySelectionMainActivity.class);
-                    startActivityForResult(i, 100);
-                }
+        editTextLocation = findViewById(R.id.trans_location);
+        editTextAmount = findViewById(R.id.trans_amt);
+        editTextCateSelection = findViewById(R.id.category_selection);
+        editTextCateSelection.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                Intent i = new Intent(AddTransactionActivity.this, CategorySelectionMainActivity.class);
+                startActivityForResult(i, CATEGORY_REQUEST_CODE);
             }
         });
-        destruct = (Button) findViewById(R.id.delete);
-        destruct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteEntry();
-            }
-        });
-        note = (EditText) findViewById(R.id.note_multi_line);
-        cat_selection.setKeyListener(null);
-        displayDate = (EditText) findViewById(R.id.trans_date);
+        buttonDestruct = findViewById(R.id.delete);
+        buttonDestruct.setOnClickListener(view -> deleteEntry());
+        editTextNote = findViewById(R.id.note_multi_line);
+        editTextCateSelection.setKeyListener(null);
+        editTextDisplayDate = findViewById(R.id.trans_date);
 
-        displayDate.setKeyListener(null);
-        displayDate.setText(currentDate());
+        editTextDisplayDate.setKeyListener(null);
+        editTextDisplayDate.setText(currentDate());
 
-        displayDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                displayDate.setText(currentDate());
-            }
-        });
-
-        displayDate.setOnClickListener(showDatePickerDialog);
+        editTextDisplayDate.setOnClickListener(view -> editTextDisplayDate.setText(currentDate()));
+        editTextDisplayDate.setOnClickListener(showDatePickerDialog);
 
         Intent i = getIntent();
-        if (i.hasExtra("state")) {
-            status_flag = true;
+        if (i.hasExtra("transId")) {
             Toast.makeText(getApplicationContext(), i.getExtras().getString("pos"), Toast.LENGTH_LONG).show();
+            transId = i.getStringExtra("transId");
             query = i.getExtras().getString("pos");
-            cat_selection.setText(i.getExtras().getString("category"));
-            note.setText(i.getExtras().getString("note"));
-            displayDate.setText(i.getExtras().getString("date"));
-            loc.setText(i.getExtras().getString("location"));
-            amt.setText(i.getExtras().getString("amount"));
+            editTextCateSelection.setText(i.getExtras().getString("category"));
+            editTextNote.setText(i.getExtras().getString("note"));
+            editTextDisplayDate.setText(i.getExtras().getString("date"));
+            editTextLocation.setText(i.getExtras().getString("location"));
+            editTextAmount.setText(i.getExtras().getString("amount"));
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) {
+        if (requestCode == CATEGORY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getStringExtra("result");
                 int img = setImageToHolder(result);
-                cat_selection.setText(result);
+                editTextCateSelection.setText(result);
                 //Log.d("img",""+img);
                 //cat_selection.setCompoundDrawablesWithIntrinsicBounds(img, 0, 0, 0);
                 //cat_selection.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_location_black_36dp, 0, 0, 0);
-
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -124,7 +113,6 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_transaction_add, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -132,48 +120,37 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_done:
-                run_transaction();
+                runTransaction();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void run_transaction() {
-
-        if (!TextUtils.isEmpty(amt.getText())) {
-            if (!TextUtils.isEmpty(cat_selection.getText())) {
+    public void runTransaction() {
+        if (!TextUtils.isEmpty(editTextAmount.getText())) {
+            if (!TextUtils.isEmpty(editTextCateSelection.getText())) {
                 finish();
+                TaskRunner.run(() -> {
+                    //LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                    boolean result = false;
+                    if (transId != null) {
+                        //handler.post(this);
+                        Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString(), null);
+                        t.modify(transId);
+                    } else {
+                        Map location = new HashMap();
+                        double lon = 00;//location.getLongitude();
+                        double lat = 00;//location.getLatitude();
+                        location.put("lat", Double.toString(lat));
+                        location.put("lon", Double.toString(lon));
 
-                Thread thread = new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            //LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                            if (status_flag) {
-
-
-                                //handler.post(this);
-                                Transaction t = new Transaction(Double.parseDouble(amt.getText().toString()), cat_selection.getText().toString(), note.getText().toString(), displayDate.getText().toString(), null);
-                                // t.modify(query);
-                            } else {
-                                Map location = new HashMap();
-                                double lon = 00;//location.getLongitude();
-                                double lat = 00;//location.getLatitude();
-                                location.put("lat", Double.toString(lat));
-                                location.put("lon", Double.toString(lon));
-
-                                //handler.post(this);
-                                Transaction t = new Transaction(Double.parseDouble(amt.getText().toString()), cat_selection.getText().toString(), note.getText().toString(), displayDate.getText().toString(), location);
-                                boolean result = t.postTransaction();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        // handler.post(this);
+                        Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString(), location);
+                        result = t.postTransaction();
                     }
-                };
-
-                thread.start();
+                    return result;
+                });
             } else {
                 View view = this.getCurrentFocus();
                 if (view != null) {
@@ -205,33 +182,31 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // do something with the date chosen by the user.
-        displayDate.setText(monthOfYear + 1 + "/" + dayOfMonth + "/" + year);
+        editTextDisplayDate.setText(monthOfYear + 1 + "/" + dayOfMonth + "/" + year);
     }
 
     public static class DatePickerFragment extends DialogFragment {
+        @NonNull
         public Dialog onCreateDialog(Bundle savedInstance) {
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            return new DatePickerDialog(getActivity(), (com.dangbinh.moneymanagement.ui.AddTransactionActivity) getActivity(), year, month, day);
+            return new DatePickerDialog(getActivity(), (AddTransactionActivity) getActivity(), year, month, day);
         }
     }
 
     public void deleteEntry() {
-        if (status_flag) {
-            Transaction t = new Transaction(Double.parseDouble(amt.getText().toString()), cat_selection.getText().toString(), note.getText().toString(), displayDate.getText().toString(), null);
-            // t.remove(query);
-            finish();
-        } else {
-            finish();
+        if (transId != null) {
+            Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString(), null);
+            t.remove(transId);
         }
+        finish();
     }
 
-    public int setImageToHolder(String cat) {
+    public int setImageToHolder(String cate) {
         int value = 0;
-
-        switch (cat) {
+        switch (cate) {
             case "Debt":
                 value = R.mipmap.ic_debt;
                 break;
