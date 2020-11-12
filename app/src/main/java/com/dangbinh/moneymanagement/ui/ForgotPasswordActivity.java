@@ -4,61 +4,46 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dangbinh.moneymanagement.R;
-import com.dangbinh.moneymanagement.utils.Constants;
+import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.utils.DialogContainer;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
-public class ForgotPassword extends AppCompatActivity implements View.OnClickListener {
+public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
-    View submit_btn;
-    EditText fgt_email;
+    View buttonSubmit;
+    EditText editTextForgotEmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        submit_btn = findViewById(R.id.forgot_pass_submit);
-        submit_btn.setOnClickListener(this);
-        fgt_email = (EditText) findViewById(R.id.forgot_email);
+        buttonSubmit = findViewById(R.id.forgot_pass_submit);
+        buttonSubmit.setOnClickListener(this);
+        editTextForgotEmail = findViewById(R.id.forgot_email);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.forgot_pass_submit:
-                /*Firebase ref = new Firebase(Constants.FIREBASE_URL);
-
-                ref.resetPassword(fgt_email.getText().toString(), new Firebase.ResultHandler() {
-                    @Override
-                    public void onSuccess() {
-                        DialogContainer dc;
-                        // password reset email sent
-                        dc = new DialogContainer(com.dangbinh.moneymanagement.Ui.ForgotPassword.this, R.string.check_mail);
-                        dc.show();
-                    }
-
-                    @Override
-                    public void onError(FirebaseError firebaseError) {
-                        // error encountered
-                        firebaseError.getMessage();
-
-                        DialogContainer dc;
-                        switch (firebaseError.getCode()) {
-                            case FirebaseError.USER_DOES_NOT_EXIST:
-                                // handle a non existing user
-                                dc = new DialogContainer(com.dangbinh.moneymanagement.Ui.ForgotPassword.this, R.string.user_does_not_exist);
-                                dc.show();
-                                break;
-                            default:
-                                dc = new DialogContainer(com.dangbinh.moneymanagement.Ui.ForgotPassword.this, R.string.some_error);
-                                dc.show();
-                                // handle other errors
-                                break;
-                        }
-                    }
-                });*/
+                Account.AUTH_INSTANCE.sendPasswordResetEmail(editTextForgotEmail.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    // password reset email sent
+                                    DialogContainer dc = new DialogContainer(ForgotPasswordActivity.this, R.string.check_mail);
+                                    dc.send();
+                                } else {
+                                    // TODO: handle error
+                                }
+                            }
+                        });
         }
     }
 }
