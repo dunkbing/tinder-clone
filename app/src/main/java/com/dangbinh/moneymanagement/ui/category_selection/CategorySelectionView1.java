@@ -27,11 +27,13 @@ public class CategorySelectionView1 extends Fragment implements CustomAdapter.Ad
             R.mipmap.ic_loan
     };
 
+    public CategorySelectionView1() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         try {
             mCallback = (IFragmentToActivity) context;
         } catch (ClassCastException e) {
@@ -47,16 +49,6 @@ public class CategorySelectionView1 extends Fragment implements CustomAdapter.Ad
     }
 
     @Override
-    public void onMethodCallback(String msg) {
-        // do something
-        mCallback.getSelectedItem(msg);
-    }
-
-    public CategorySelectionView1() {
-        // Required empty public constructor
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -68,6 +60,12 @@ public class CategorySelectionView1 extends Fragment implements CustomAdapter.Ad
         list = (ListView) view.findViewById(R.id.list1);
         list.setAdapter(new CustomAdapter(getActivity(), names, img_list, this));
         return view;
+    }
+
+    @Override
+    public void onMethodCallback(String msg) {
+        // do something
+        mCallback.selectedItem(msg);
     }
 
     public Bitmap getRoundedShape(Bitmap scaleBitmapImage) {

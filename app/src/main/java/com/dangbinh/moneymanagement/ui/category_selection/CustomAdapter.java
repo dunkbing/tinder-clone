@@ -36,12 +36,12 @@ public class CustomAdapter extends BaseAdapter {
         void onMethodCallback(String msg);
     }
 
-    public CustomAdapter(Activity activity, String[] prgmNameList, int[] prgmImages, AdapterCallback callback) {
+    public CustomAdapter(Activity activity, String[] result, int[] imageId, AdapterCallback callback) {
         // TODO Auto-generated constructor stub
-        result = prgmNameList;
-        context = activity;
-        imageId = prgmImages;
-        inflater = (LayoutInflater) context.
+        this.result = result;
+        this.context = activity;
+        this.imageId = imageId;
+        this.inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mAdapterCallback = callback;
     }
@@ -55,7 +55,7 @@ public class CustomAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         // TODO Auto-generated method stub
-        return position;
+        return result[position];
     }
 
     @Override
@@ -73,18 +73,14 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         Holder holder = new Holder();
-
         rowView = inflater.inflate(R.layout.list_layout, null);
-        holder.tv = (TextView) rowView.findViewById(R.id.names);
-        holder.img = (ImageView) rowView.findViewById(R.id.icon);
+        holder.tv = rowView.findViewById(R.id.names);
+        holder.img = rowView.findViewById(R.id.icon);
         holder.tv.setText(result[position]);
         holder.img.setImageResource(imageId[position]);
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                mAdapterCallback.onMethodCallback(result[position]);
-            }
+        rowView.setOnClickListener(v -> {
+            // TODO Auto-generated method stub
+            mAdapterCallback.onMethodCallback(result[position]);
         });
         return rowView;
     }

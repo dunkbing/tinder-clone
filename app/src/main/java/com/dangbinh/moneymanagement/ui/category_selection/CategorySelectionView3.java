@@ -28,21 +28,6 @@ public class CategorySelectionView3 extends Fragment implements CustomAdapter.Ad
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_category_selection_page3, container, false);
-        list = (ListView) view.findViewById(R.id.list3);
-        list.setAdapter(new CustomAdapter(getActivity(), names, img_list, this));
-
-        return view;
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
@@ -61,8 +46,23 @@ public class CategorySelectionView3 extends Fragment implements CustomAdapter.Ad
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_category_selection_page3, container, false);
+        list = (ListView) view.findViewById(R.id.list3);
+        list.setAdapter(new CustomAdapter(getActivity(), names, img_list, this));
+
+        return view;
+    }
+
+    @Override
     public void onMethodCallback(String msg) {
         // do something
-        mCallback.getSelectedItem(msg);
+        mCallback.selectedItem(msg);
     }
 }
