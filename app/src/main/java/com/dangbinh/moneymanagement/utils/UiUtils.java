@@ -2,8 +2,10 @@ package com.dangbinh.moneymanagement.utils;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -74,6 +76,12 @@ public class UiUtils {
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             view.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    public static void clearSharePref(Activity activity, String name) {
+        SharedPreferences.Editor editor = activity.getSharedPreferences(name, Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.commit();
     }
 }
 
