@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.dangbinh.moneymanagement.utils.Constants;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,7 +47,7 @@ public class Transaction {
         this.category = category;
         this.note = note;
         this.date = date;
-        this.username = Account.CURRENT_USER.getDisplayName();
+        this.username = Constants.CURRENT_USER.getDisplayName();
     }
 
     public ArrayList<Transaction> getAllTransactions(Account account) {
@@ -127,7 +128,7 @@ public class Transaction {
     }
 
     public static DatabaseReference getTransRef() {
-        return FirebaseDatabase.getInstance().getReference(Account.CURRENT_USER.getUid());
+        return FirebaseDatabase.getInstance().getReference(Constants.CURRENT_USER.getUid());
     }
 
     @Exclude
@@ -143,13 +144,13 @@ public class Transaction {
     }
 
     public boolean postTransaction() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Account.CURRENT_USER.getUid());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.CURRENT_USER.getUid());
         ref.child("transactions").push().setValue(this);
         return true;
     }
 
     public boolean modify(String transId) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Account.CURRENT_USER.getUid());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.CURRENT_USER.getUid());
         Map<String, Object> trans = this.toMap();
         Map<String, Object> transUpdate = new HashMap<>();
         transUpdate.put("/"+transId+"/", trans);

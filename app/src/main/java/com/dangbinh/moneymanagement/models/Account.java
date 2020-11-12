@@ -1,14 +1,28 @@
 package com.dangbinh.moneymanagement.models;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+@Entity(tableName = "accounts")
 public class Account {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "account_id")
     private String uid;
+    @NonNull
+    @ColumnInfo(name = "email", typeAffinity = ColumnInfo.TEXT)
     private String email;
+    @NonNull
+    @ColumnInfo(name = "password", typeAffinity = ColumnInfo.TEXT)
     private String password;
-    public final static FirebaseAuth AUTH_INSTANCE = FirebaseAuth.getInstance();
-    public final static FirebaseUser CURRENT_USER = AUTH_INSTANCE.getCurrentUser();
+
+    // Constant
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
 
     public Account() {}
     public Account(String uid, String email, String password) {
