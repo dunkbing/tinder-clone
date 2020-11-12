@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -27,8 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 
-import com.dangbinh.moneymanagement.models.Person;
 import com.dangbinh.moneymanagement.R;
+import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
 import com.dangbinh.moneymanagement.utils.UserDataGrabberUtils;
 import com.google.android.material.snackbar.Snackbar;
@@ -302,17 +301,17 @@ public class RegisterActivity extends AppCompatActivity {
      * the user.
      */
     public class UserRegisterTask implements Callable<Void> {
-        Person p;
+        Account account;
 
         UserRegisterTask(String email, String password) {
-            p = new Person();
-            p.setEmail(email);
-            p.setPass(password);
+            account = new Account();
+            account.setEmail(email);
+            account.setPassword(password);
         }
 
         @Override
         public Void call() {
-            mAuth.createUserWithEmailAndPassword(p.getEmail(), p.getPass())
+            mAuth.createUserWithEmailAndPassword(account.getEmail(), account.getPassword())
                     .addOnCompleteListener(RegisterActivity.this, task -> {
                         // showProgress(false);
                         if (task.isSuccessful()) {

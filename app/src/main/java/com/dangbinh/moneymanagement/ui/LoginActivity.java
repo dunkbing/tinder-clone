@@ -23,12 +23,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dangbinh.moneymanagement.R;
-import com.dangbinh.moneymanagement.models.Person;
+import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
 import com.dangbinh.moneymanagement.utils.UserDataGrabberUtils;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -106,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 attemptLogin();
                 break;
             case R.id.text_view_forgotpass:
-                i = new Intent(this, com.dangbinh.moneymanagement.ui.ForgotPassword.class);
+                i = new Intent(this, ForgotPasswordActivity.class);
                 startActivity(i);
                 break;
         }
@@ -249,21 +248,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * the user.
      */
     public class UserLoginTask implements Callable<Void> {
-        Person p;
+        Account account;
 
         UserLoginTask(String email, String password) {
-            p = new Person();
-            p.setEmail(email);
-            p.setPass(password);
+            account = new Account();
+            account.setEmail(email);
+            account.setPassword(password);
         }
 
         @Override
         public Void call() {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            mAuth.signInWithEmailAndPassword(p.getEmail(), p.getPass())
+            mAuth.signInWithEmailAndPassword(account.getEmail(), account.getPassword())
                     .addOnCompleteListener(LoginActivity.this, task -> {
                         if (task.isSuccessful()) {
-                            Intent view = new Intent(LoginActivity.this, TransactionsView.class);
+                            Intent view = new Intent(LoginActivity.this, TransactionsViewActivity.class);
                             view.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             Toast.makeText(getApplicationContext(), "User Successfully logged with email " + task.getResult().getUser().getEmail(), Toast.LENGTH_LONG).show();
                             startActivity(view);
