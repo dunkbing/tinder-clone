@@ -12,7 +12,7 @@
 
     <!-- Register progress -->
     <ProgressBar
-        android:id="@+id/Register_progress"
+        android:id="@+id/progress_bar_register"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

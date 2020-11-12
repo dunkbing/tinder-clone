@@ -70,6 +70,13 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <CheckBox
+                android:id="@+id/checkbox_remember_me"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="remember me"
+                android:layout_marginLeft="110dp"/>
+
             <Button
                 android:id="@+id/button_signin"
                 style="?android:textAppearanceSmall"
