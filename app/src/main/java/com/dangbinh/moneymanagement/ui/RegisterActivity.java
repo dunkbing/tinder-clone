@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import androidx.loader.app.LoaderManager;
 import com.dangbinh.moneymanagement.R;
 import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
+import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.dangbinh.moneymanagement.utils.UserDataGrabberUtils;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
+    private ProgressBar progressBar;
     private View mRegisterFormView;
 
 
@@ -90,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmailSignInButton.setOnClickListener(view -> attemptRegister());
 
         mRegisterFormView = findViewById(R.id.Register_form);
-        mProgressView = findViewById(R.id.Register_progress);
+        progressBar = findViewById(R.id.progress_bar_register);
 
     }
 
@@ -228,7 +230,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user Register attempt.
-            showProgress(true);
+            UiUtils.showProgress(mRegisterFormView, progressBar, true, getResources().getInteger(android.R.integer.config_shortAnimTime));
             TaskRunner.run(new UserRegisterTask(email, password));
         }
     }
@@ -262,18 +264,18 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressBar.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
