@@ -1,5 +1,7 @@
 package com.dangbinh.moneymanagement.utils;
 
+import android.app.Activity;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -18,5 +20,9 @@ public class TaskRunner<T> {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static void runOnUiThread(Activity activity, Runnable task) {
+        activity.runOnUiThread(task);
     }
 }
