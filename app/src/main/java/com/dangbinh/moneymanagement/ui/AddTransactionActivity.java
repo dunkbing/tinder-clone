@@ -28,14 +28,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.dangbinh.moneymanagement.models.Transaction;
 import com.dangbinh.moneymanagement.R;
+import com.dangbinh.moneymanagement.models.Transaction;
 import com.dangbinh.moneymanagement.ui.category_selection.CategorySelectionMainActivity;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
+import com.dangbinh.moneymanagement.utils.UiUtils;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AddTransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -195,7 +194,13 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
             Transaction t = new Transaction();
             t.remove(transId);
         }
-        finish();
+        UiUtils.startActivity(this, TransactionsViewActivity.class);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        UiUtils.startActivity(this, TransactionsViewActivity.class);
     }
 
     public int setImageToHolder(String cate) {

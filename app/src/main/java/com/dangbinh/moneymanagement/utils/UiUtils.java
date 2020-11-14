@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.View;
@@ -82,6 +83,12 @@ public class UiUtils {
         SharedPreferences.Editor editor = activity.getSharedPreferences(name, Context.MODE_PRIVATE).edit();
         editor.clear();
         editor.commit();
+    }
+
+    public static <T extends Activity> void startActivity(Context context, Class<T> des) {
+        Intent i = new Intent(context, des);
+        context.startActivity(i);
+        ((Activity)context).finish();
     }
 }
 

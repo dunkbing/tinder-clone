@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class TaskRunner<T> {
+public class TaskRunner {
     public static <T> T run(Callable<T> task) {
         T result = null;
         try {
