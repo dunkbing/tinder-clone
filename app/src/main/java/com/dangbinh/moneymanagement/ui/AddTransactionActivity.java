@@ -31,6 +31,7 @@ import androidx.fragment.app.DialogFragment;
 import com.dangbinh.moneymanagement.R;
 import com.dangbinh.moneymanagement.models.Transaction;
 import com.dangbinh.moneymanagement.ui.category_selection.CategorySelectionMainActivity;
+import com.dangbinh.moneymanagement.ui.category_selection.CategorySelectionMainActivity.CateSelectionResult;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
 import com.dangbinh.moneymanagement.utils.UiUtils;
 
@@ -51,6 +52,7 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     public static final String PARENT_CLASS_SOURCE = "com.dangbinh.moneymanagement.ui.AddTransactionActivity.java";
     public static final String TITLE = "Amount";
     private static final int CATEGORY_REQUEST_CODE = 100;
+    private Transaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
             editTextDisplayDate.setText(i.getExtras().getString("date"));
             editTextAmount.setText(i.getExtras().getString("amount"));
         }
+        transaction = new Transaction();
     }
 
     @Override
@@ -94,9 +97,12 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CATEGORY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                String result = data.getStringExtra("result");
-                int img = setImageToHolder(result);
-                editTextCateSelection.setText(result);
+                String cate = data.getStringExtra(CateSelectionResult.CATEGORY.toString());
+                String type = data.getStringExtra(CateSelectionResult.TYPE.toString());
+                transaction.setType(Transaction.Type.valueOf(type));
+                transaction.setCategory(cate);
+                int img = setImageToHolder(cate);
+                editTextCateSelection.setText(cate);
                 //Log.d("img",""+img);
                 //cat_selection.setCompoundDrawablesWithIntrinsicBounds(img, 0, 0, 0);
                 //cat_selection.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_location_black_36dp, 0, 0, 0);
@@ -131,13 +137,20 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
                 TaskRunner.run(() -> {
                     LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
                     boolean result = false;
+                    double amount = Double.parseDouble(editTextAmount.getText().toString());
+                    if (transaction.getType() == Transaction.Type.INCOME) {
+                        Transaction.adjustBalance(String.valueOf(Transaction.getBalance() + amount));
+                    } else if (transaction.getType() == Transaction.Type.EXPENSE) {
+                        Transaction.adjustBalance(String.valueOf(Transaction.getBalance() - amount));
+                    }
+                    transaction.setAmount(amount);
+                    transaction.setNote(editTextNote.getText().toString());
+                    transaction.setDate(editTextDisplayDate.getText().toString());
                     if (transId != null) {
-                        Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString());
-                        t.modify(transId);
+                        transaction.modify(transId);
                         Log.d("update transaction", transId);
                     } else {
-                        Transaction t = new Transaction(transId, Double.parseDouble(editTextAmount.getText().toString()), editTextCateSelection.getText().toString(), editTextNote.getText().toString(), editTextDisplayDate.getText().toString());
-                        result = t.postTransaction();
+                        result = transaction.postTransaction();
                     }
                     return result;
                 });

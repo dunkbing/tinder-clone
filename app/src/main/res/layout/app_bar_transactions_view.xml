@@ -8,12 +8,13 @@
     tools:context=".ui.TransactionsViewActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/trans_view_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/trans_view_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"

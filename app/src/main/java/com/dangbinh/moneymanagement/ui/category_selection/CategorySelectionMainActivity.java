@@ -3,19 +3,21 @@ package com.dangbinh.moneymanagement.ui.category_selection;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
+import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.util.Log;
+
+import com.dangbinh.moneymanagement.R;
+import com.dangbinh.moneymanagement.models.Transaction;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dangbinh.moneymanagement.R;
 
 public class CategorySelectionMainActivity extends AppCompatActivity implements IFragmentToActivity {
 
@@ -27,7 +29,7 @@ public class CategorySelectionMainActivity extends AppCompatActivity implements 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_selection_main);
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.trans_view_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,16 +78,22 @@ public class CategorySelectionMainActivity extends AppCompatActivity implements 
         }
     }
 
-    public void selectedItem(String msg) {
-        Log.d("got item", msg);
+    public void selectItem(String cate, Transaction.Type type) {
+        Log.d("got item", cate);
         //Toast.makeText(getApplicationContext(),"InActivity got data"+msg,Toast.LENGTH_LONG).show();
         Intent return_intent = new Intent();
-        if (msg != null) {
-            return_intent.putExtra("result", msg);
+        if (cate != null) {
+            return_intent.putExtra(CateSelectionResult.CATEGORY.toString(), cate);
+            return_intent.putExtra(CateSelectionResult.TYPE.toString(), type.toString());
             setResult(Activity.RESULT_OK, return_intent);
         } else {
             setResult(Activity.RESULT_CANCELED, return_intent);
         }
         finish();
+    }
+
+    public enum CateSelectionResult {
+        CATEGORY,
+        TYPE
     }
 }

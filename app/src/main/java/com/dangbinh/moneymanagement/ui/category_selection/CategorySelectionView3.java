@@ -2,13 +2,15 @@ package com.dangbinh.moneymanagement.ui.category_selection;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import androidx.fragment.app.Fragment;
+
 import com.dangbinh.moneymanagement.R;
+import com.dangbinh.moneymanagement.models.Transaction;
 
 
 public class CategorySelectionView3 extends Fragment implements CustomAdapter.AdapterCallback {
@@ -61,8 +63,8 @@ public class CategorySelectionView3 extends Fragment implements CustomAdapter.Ad
     }
 
     @Override
-    public void onMethodCallback(String msg) {
+    public void onMethodCallback(String cate) {
         // do something
-        mCallback.selectedItem(msg);
+        mCallback.selectItem(cate, Transaction.Type.DEBT_LOAN);
     }
 }
