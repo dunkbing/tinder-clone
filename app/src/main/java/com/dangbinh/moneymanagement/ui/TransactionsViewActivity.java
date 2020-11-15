@@ -37,6 +37,7 @@ import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.models.Transaction;
 import com.dangbinh.moneymanagement.ui.dialog.AdjustBalanceDialog;
 import com.dangbinh.moneymanagement.utils.Constants;
+import com.dangbinh.moneymanagement.utils.TaskRunner;
 import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -49,6 +50,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 public class TransactionsViewActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -118,11 +120,30 @@ public class TransactionsViewActivity extends AppCompatActivity
         }));
     }
 
+    Callable fetchTask = () -> {
+        fetch();
+        return null;
+    };
+
+    Callable getWalletBallanceTask = () -> {
+        getWalletBalance();
+        return null;
+    };
+
     @Override
     protected void onStart() {
         super.onStart();
-        adapter.startListening();
-        getWalletBalance();
+        try {
+            TaskRunner.parallel(fetchTask, getWalletBallanceTask);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
     private void getWalletBalance() {
@@ -146,12 +167,6 @@ public class TransactionsViewActivity extends AppCompatActivity
 
                     }
                 });
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
     }
 
     private void fetch() {
@@ -188,6 +203,7 @@ public class TransactionsViewActivity extends AppCompatActivity
             }
         };
         recycleView.setAdapter(adapter);
+        adapter.startListening();
     }
 
     @Override
