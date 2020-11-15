@@ -65,6 +65,10 @@ public class CategorySelectionView3 extends Fragment implements CustomAdapter.Ad
     @Override
     public void onMethodCallback(String cate) {
         // do something
-        mCallback.selectItem(cate, Transaction.Type.DEBT_LOAN);
+        if (cate.equals("Debt")) {
+            mCallback.selectItem(cate, Transaction.Type.DEBT);
+        } else {
+            mCallback.selectItem(cate, Transaction.Type.LOAN);
+        }
     }
 }

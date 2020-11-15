@@ -226,6 +226,7 @@ public class Transaction {
     public enum Type {
         INCOME,
         EXPENSE,
-        DEBT_LOAN,
+        DEBT,
+        LOAN
     }
 }

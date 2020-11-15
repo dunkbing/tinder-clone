@@ -290,8 +290,8 @@ public class TransactionsViewActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            Intent i = new Intent(TransactionsViewActivity.this, TaxEstimatorActivity.class);
-            startActivity(i);
+            // Intent i = new Intent(TransactionsViewActivity.this, TaxEstimatorActivity.class);
+            // startActivity(i);
         } else if (id == R.id.nav_report) {
             Intent i = new Intent(getApplicationContext(), ReportActivity.class);
             startActivity(i);

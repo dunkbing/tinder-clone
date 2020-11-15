@@ -34,6 +34,8 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
         setContentView(R.layout.activity_report);
         TextView textViewIncome = findViewById(R.id.text_view_income);
         TextView textViewExpense = findViewById(R.id.text_view_expense);
+        TextView textViewDebt = findViewById(R.id.text_view_deb);
+        TextView textViewLoan = findViewById(R.id.text_view_loans);
         // getSupportActionBar().setDisplayShowTitleEnabled(false);
         Toolbar toolbar = findViewById(R.id.trans_view_toolbar);
         setSupportActionBar(toolbar);
@@ -49,6 +51,8 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
         List<Transaction> transactions = TransactionsViewActivity.transactions;
         AtomicReference<Double> income = new AtomicReference<>((double) 0);
         AtomicReference<Double> expense = new AtomicReference<>((double) 0);
+        AtomicReference<Double> debt = new AtomicReference<>((double) 0);
+        AtomicReference<Double> loan = new AtomicReference<>((double) 0);
         List<BarEntry> entries = new ArrayList<>();
         transactions.forEach(transaction -> {
             // entries.add(new BarEntry(2014, (float) transaction.getAmount()));
@@ -58,11 +62,19 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
             if (transaction.getType() == Transaction.Type.EXPENSE) {
                 expense.updateAndGet(v -> (double) (v + transaction.getAmount()));
             }
+            if (transaction.getType() == Transaction.Type.DEBT) {
+                debt.updateAndGet(v -> (double) (v + transaction.getAmount()));
+            }
+            if (transaction.getType() == Transaction.Type.LOAN) {
+                loan.updateAndGet(v -> (double) (v + transaction.getAmount()));
+            }
         });
         entries.add(new BarEntry(1, (float)((double)income.get())));
         entries.add(new BarEntry(2, (float)((double)expense.get())));
         textViewIncome.setText(String.valueOf(income.get()));
         textViewExpense.setText(String.valueOf(expense.get()));
+        textViewDebt.setText(String.valueOf(debt.get()));
+        textViewLoan.setText(String.valueOf(loan.get()));
         BarDataSet barDataSet = new BarDataSet(entries, "Transactions");
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         barDataSet.setValueTextColor(Color.BLACK);
@@ -83,8 +95,8 @@ public class ReportActivity extends AppCompatActivity implements NavigationView.
             Intent i = new Intent(this, TransactionsViewActivity.class);
             startActivity(i);
         } else if (id == R.id.nav_gallery) {
-            Intent i = new Intent(this, TaxEstimatorActivity.class);
-            startActivity(i);
+            // Intent i = new Intent(this, TaxEstimatorActivity.class);
+            // startActivity(i);
         } else if (id == R.id.nav_report) {
             Intent i = new Intent(getApplicationContext(), ReportActivity.class);
             startActivity(i);
