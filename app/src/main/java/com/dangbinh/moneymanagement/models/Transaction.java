@@ -162,8 +162,13 @@ public class Transaction {
     }
 
     public static void adjustBalance(String balance) {
-        Transaction.balance = Double.parseDouble(balance);
-        getTransRef().child("wallet").setValue(balance);
+        try {
+            Transaction.balance = Double.parseDouble(balance);
+            getTransRef().child("wallet").setValue(balance);
+        } catch (Exception e) {
+            Transaction.balance = 0;
+            getTransRef().child("wallet").setValue(0);
+        }
     }
 
     public static double getBalance() { return balance; }

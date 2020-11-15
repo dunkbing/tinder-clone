@@ -131,7 +131,13 @@ public class TransactionsViewActivity extends AppCompatActivity
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Transaction.adjustBalance(snapshot.getValue().toString());
+                        String balance = (String)snapshot.getValue();
+                        if (balance != null) {
+                            balance = snapshot.getValue().toString();
+                        } else {
+                            balance = "0";
+                        }
+                        Transaction.adjustBalance(balance);
                         setTitle("Balance: "+Transaction.getBalance());
                     }
 
