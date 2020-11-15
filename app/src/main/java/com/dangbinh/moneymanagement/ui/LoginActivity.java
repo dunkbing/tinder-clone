@@ -70,6 +70,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();
             return;
         }
+        if (i.getBooleanExtra(RegisterActivity.REGISTER_SUCCESS, false)) {
+            Toast.makeText(getApplicationContext(), "User registered Successfully", Toast.LENGTH_SHORT).show();
+        }
         cbRememberMe = findViewById(R.id.checkbox_remember_me);
 
         // Email Field

@@ -3,6 +3,7 @@ package com.dangbinh.moneymanagement.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -52,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     FirebaseAuth mAuth;
+    public static final String REGISTER_SUCCESS = "REGISTER_SUCCESS";
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -309,15 +311,16 @@ public class RegisterActivity extends AppCompatActivity {
                     .addOnCompleteListener(RegisterActivity.this, task -> {
                         // showProgress(false);
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "User registered Successfully", Toast.LENGTH_SHORT).show();
+                            Transaction.adjustBalance("0");
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            intent.putExtra(REGISTER_SUCCESS, true);
+                            startActivity(intent);
+                            finish();
                         } else {
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        finish();
                     });
-            new Transaction().setWalletBalance(0);
-            UiUtils.startActivity(RegisterActivity.this, LoginActivity.class);
             return null;
         }
     }
