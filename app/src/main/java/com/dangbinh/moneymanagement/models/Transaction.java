@@ -1,13 +1,18 @@
 package com.dangbinh.moneymanagement.models;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.dangbinh.moneymanagement.utils.Constants;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +36,17 @@ public class Transaction {
     private String note;
     @ColumnInfo(name = "date", typeAffinity = ColumnInfo.TEXT)
     private String date;
+    private Type type;
+    private static double balance = 0;
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     private SimpleDateFormat sdf;
     private Date currentDate;
     private String username;
@@ -39,6 +55,7 @@ public class Transaction {
     static DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
     public Transaction() {
+        transId = null;
     }
 
     public Transaction(String transId, double amount, String category, String note, String date) {
@@ -47,7 +64,7 @@ public class Transaction {
         this.category = category;
         this.note = note;
         this.date = date;
-        this.username = Constants.CURRENT_USER.getDisplayName();
+        this.username = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     public ArrayList<Transaction> getAllTransactions(Account account) {
@@ -128,7 +145,7 @@ public class Transaction {
     }
 
     public static DatabaseReference getTransRef() {
-        return FirebaseDatabase.getInstance().getReference(Constants.CURRENT_USER.getUid());
+        return FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     @Exclude
@@ -139,18 +156,47 @@ public class Transaction {
         result.put("date", date);
         result.put("note", note);
         result.put("username", username);
+        result.put("type", type.toString());
 
         return result;
     }
 
+    public static void adjustBalance(String balance) {
+        Transaction.balance = Double.parseDouble(balance);
+        getTransRef().child("wallet").setValue(balance);
+    }
+
+    public static double getBalance() { return balance; }
+
     public boolean postTransaction() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.CURRENT_USER.getUid());
-        ref.child("transactions").push().setValue(this);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref.child("transactions").push().runTransaction(new com.google.firebase.database.Transaction.Handler() {
+            @NonNull
+            @Override
+            public com.google.firebase.database.Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                Transaction transaction = currentData.getValue(Transaction.class);
+                if (transaction == null) {
+                    currentData.setValue(toMap());
+                }
+                return com.google.firebase.database.Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+            }
+        });
+        return true;
+    }
+
+    public boolean setWalletBalance(double balance) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref.child("wallet").setValue(balance);
         return true;
     }
 
     public boolean modify(String transId) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.CURRENT_USER.getUid());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Map<String, Object> trans = this.toMap();
         Map<String, Object> transUpdate = new HashMap<>();
         transUpdate.put("/"+transId+"/", trans);
@@ -170,5 +216,11 @@ public class Transaction {
 
     public void setTransId(String transId) {
         this.transId = transId;
+    }
+
+    public enum Type {
+        INCOME,
+        EXPENSE,
+        DEBT_LOAN,
     }
 }

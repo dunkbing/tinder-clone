@@ -35,13 +35,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dangbinh.moneymanagement.R;
 import com.dangbinh.moneymanagement.models.Account;
 import com.dangbinh.moneymanagement.models.Transaction;
+import com.dangbinh.moneymanagement.ui.dialog.AdjustBalanceDialog;
 import com.dangbinh.moneymanagement.utils.Constants;
 import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -56,8 +61,11 @@ public class TransactionsViewActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions_view);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.trans_view_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setOnClickListener(view -> {
+            openAdjustBalanceDialog();
+        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
@@ -114,6 +122,24 @@ public class TransactionsViewActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         adapter.startListening();
+        getWalletBalance();
+    }
+
+    private void getWalletBalance() {
+        Transaction.getTransRef()
+                .child("wallet")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Transaction.adjustBalance(snapshot.getValue().toString());
+                        setTitle("Balance: "+Transaction.getBalance());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     @Override
@@ -148,7 +174,7 @@ public class TransactionsViewActivity extends AppCompatActivity
             @Override
             protected void onBindViewHolder(@NonNull TransactionViewHolder holder, int position, @NonNull Transaction model) {
                 Log.d(TAG, model.getAmount()+"");
-                holder.setTextViewAmount("$" + Objects.requireNonNull(model).getAmount());
+                holder.setTextViewAmount(Objects.requireNonNull(model).getAmount()+"đ");
                 holder.setTextViewCate(model.getCategory());
                 holder.setHiddenPosition(String.valueOf(this.getRef(position)));
                 holder.setHiddenTransId(model.getTransId());
@@ -186,7 +212,9 @@ public class TransactionsViewActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_settings:
+            case R.id.action_adjust_balance:
+                openAdjustBalanceDialog();
+                return true;
             case R.id.nav_gallery:
                 return true;
             case R.id.action_sign_out:
@@ -197,13 +225,29 @@ public class TransactionsViewActivity extends AppCompatActivity
         }
     }
 
+    private void openAdjustBalanceDialog() {
+        AdjustBalanceDialog dialog = new AdjustBalanceDialog();
+        dialog.setOnAdjustBalanceListener(balance -> {
+            Transaction.adjustBalance(balance);
+            setTitle("Balance: "+balance);
+        });
+        dialog.show(getSupportFragmentManager(), "adjust balance");
+    }
+
     private void signOut() {
-        Constants.AUTH_INSTANCE.signOut();
-        UiUtils.clearSharePref(this, Account.class.getName());
-        Intent i = new Intent(this, LoginActivity.class);
-        i.putExtra(Account.SIGNED_OUT, true);
-        startActivity(i);
-        finish();
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    UiUtils.clearSharePref(TransactionsViewActivity.this, Account.class.getName());
+                    Intent i = new Intent(TransactionsViewActivity.this, LoginActivity.class);
+                    i.putExtra(Account.SIGNED_OUT, true);
+                    startActivity(i);
+                    finish();
+                }
+            }
+        });
+        FirebaseAuth.getInstance().signOut();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

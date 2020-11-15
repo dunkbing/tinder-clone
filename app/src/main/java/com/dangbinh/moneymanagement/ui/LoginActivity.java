@@ -299,10 +299,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .addOnCompleteListener(LoginActivity.this, task -> {
                             if (task.isSuccessful()) {
                                 result.set(true);
-                                Intent view = new Intent(LoginActivity.this, TransactionsViewActivity.class);
-                                view.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                Toast.makeText(getApplicationContext(), "User Successfully logged with email " + task.getResult().getUser().getEmail(), Toast.LENGTH_LONG).show();
-                                startActivity(view);
+                                Intent intent = new Intent(LoginActivity.this, TransactionsViewActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Toast.makeText(getApplicationContext(), "User Successfully logged with uid " + task.getResult().getUser().getUid(), Toast.LENGTH_LONG).show();
+                                startActivity(intent);
                             } else {
                                 TaskRunner.runOnUiThread(LoginActivity.this, () -> UiUtils.showProgress(loginFormView, progressBar, false, getResources().getInteger(android.R.integer.config_shortAnimTime)));
                                 Toast.makeText(getApplicationContext(), Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();

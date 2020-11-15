@@ -8,10 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dangbinh.moneymanagement.R;
-import com.dangbinh.moneymanagement.utils.Constants;
 import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,7 +31,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.forgot_pass_submit:
-                Constants.AUTH_INSTANCE.sendPasswordResetEmail(editTextForgotEmail.getText().toString())
+                FirebaseAuth.getInstance().sendPasswordResetEmail(editTextForgotEmail.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

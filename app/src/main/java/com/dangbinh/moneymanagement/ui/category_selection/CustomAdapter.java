@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.res.ResourcesCompat;
 
 import com.dangbinh.moneymanagement.R;
 
@@ -33,7 +34,7 @@ public class CustomAdapter extends BaseAdapter {
 
 
     public interface AdapterCallback {
-        void onMethodCallback(String msg);
+        void onMethodCallback(String cate);
     }
 
     public CustomAdapter(Activity activity, String[] result, int[] imageId, AdapterCallback callback) {
