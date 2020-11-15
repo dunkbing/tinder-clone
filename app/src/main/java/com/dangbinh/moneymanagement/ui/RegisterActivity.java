@@ -3,9 +3,6 @@ package com.dangbinh.moneymanagement.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -26,9 +23,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.dangbinh.moneymanagement.R;
 import com.dangbinh.moneymanagement.models.Account;
+import com.dangbinh.moneymanagement.models.Transaction;
 import com.dangbinh.moneymanagement.utils.TaskRunner;
 import com.dangbinh.moneymanagement.utils.UiUtils;
 import com.dangbinh.moneymanagement.utils.UserDataGrabberUtils;
@@ -46,7 +46,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A Register screen that offers Register via email/password.
  */
 public class RegisterActivity extends AppCompatActivity {
-
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -97,9 +96,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void populateAutoComplete() {
-        /*if (!mayRequestContacts()) {
+        if (!mayRequestContacts()) {
             return;
-        }*/
+        }
         LoaderManager.getInstance(this).initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @NonNull
             @Override
@@ -187,13 +186,6 @@ public class RegisterActivity extends AppCompatActivity {
      * errors are presented and no actual Register attempt is made.
      */
     private void attemptRegister() {
-        if (mAuth == null) {
-            Toast.makeText(this, "mAuth null", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            Toast.makeText(this, "mAuth not null", Toast.LENGTH_SHORT).show();
-        }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -324,6 +316,8 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                         finish();
                     });
+            new Transaction().setWalletBalance(0);
+            UiUtils.startActivity(RegisterActivity.this, LoginActivity.class);
             return null;
         }
     }
