@@ -49,6 +49,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
@@ -57,7 +59,8 @@ public class TransactionsViewActivity extends AppCompatActivity
 
     private static final String TAG = "TransactionsViewActivit";
     RecyclerView recycleView;
-    FirebaseRecyclerAdapter<Transaction, TransactionViewHolder> adapter;
+    private FirebaseRecyclerAdapter<Transaction, TransactionViewHolder> adapter;
+    public static List<Transaction> transactions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +95,7 @@ public class TransactionsViewActivity extends AppCompatActivity
         recycleView.setLayoutManager(new LinearLayoutManager(this));
         recycleView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        fetch();
+        // fetch();
         recycleView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recycleView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -170,17 +173,23 @@ public class TransactionsViewActivity extends AppCompatActivity
     }
 
     private void fetch() {
+        transactions.clear();
         Query query = Transaction.getTransRef()
                 .child("transactions");
         Log.d(TAG, query.getRef().getKey());
         FirebaseRecyclerOptions<Transaction> options = new FirebaseRecyclerOptions.Builder<Transaction>()
                 .setQuery(query, snapshot -> {
                     String key = snapshot.getKey();
-                    return new Transaction(key,
+                    Transaction t = new Transaction(key,
                             Double.parseDouble(snapshot.child("amount").getValue().toString()),
                             snapshot.child("category").getValue().toString(),
                             snapshot.child("note").getValue().toString(),
                             snapshot.child("date").getValue().toString());
+                    if (snapshot.child("type").getValue() != null) {
+                        t.setType(Transaction.Type.valueOf(snapshot.child("type").getValue().toString()));
+                    }
+                    transactions.add(t);
+                    return t;
                 })
                 .build();
         adapter = new FirebaseRecyclerAdapter<Transaction, TransactionViewHolder>(options) {
@@ -282,6 +291,9 @@ public class TransactionsViewActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
             Intent i = new Intent(TransactionsViewActivity.this, TaxEstimatorActivity.class);
+            startActivity(i);
+        } else if (id == R.id.nav_report) {
+            Intent i = new Intent(getApplicationContext(), ReportActivity.class);
             startActivity(i);
         }
 //        } else if (id == R.id.nav_manage) {

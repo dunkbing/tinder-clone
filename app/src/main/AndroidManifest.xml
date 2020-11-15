@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dangbinh.moneymanagement">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.dangbinh.moneymanagement.ui.LoginActivity"
+        <activity android:name=".ui.ReportActivity"
+            android:label="Report"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.LoginActivity"
             android:label="Login"
             android:noHistory="true">
             <intent-filter>
@@ -21,34 +26,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.dangbinh.moneymanagement.ui.RegisterActivity"
+            android:name=".ui.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:parentActivityName="com.dangbinh.moneymanagement.ui.LoginActivity">
+            android:parentActivityName=".ui.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dangbinh.moneymanagement.ui.LoginActivity" />
         </activity>
         <activity
-            android:name="com.dangbinh.moneymanagement.ui.ForgotPasswordActivity"
+            android:name=".ui.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_pass"
-            android:parentActivityName="com.dangbinh.moneymanagement.ui.LoginActivity">
+            android:parentActivityName=".ui.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dangbinh.moneymanagement.ui.LoginActivity" />
         </activity>
         <activity
-            android:name="com.dangbinh.moneymanagement.ui.TransactionsViewActivity"
+            android:name=".ui.TransactionsViewActivity"
             android:label="@string/title_activity_transcations_view"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.dangbinh.moneymanagement.ui.AddTransactionActivity"
+            android:name=".ui.AddTransactionActivity"
             android:label="@string/title_add_transcations_view" />
         <activity
-            android:name="com.dangbinh.moneymanagement.ui.category_selection.CategorySelectionMainActivity"
+            android:name=".ui.category_selection.CategorySelectionMainActivity"
             android:label="Select Category"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.dangbinh.moneymanagement.ui.TaxEstimatorActivity"></activity>
+        <activity android:name=".ui.TaxEstimatorActivity" />
     </application>
 
 </manifest>
