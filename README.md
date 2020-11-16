@@ -63,12 +63,9 @@ App's data is stored in the firebase realtime db (JSON format) and on the user's
 
 - The bar graph show stats based on the user's spending habits within the last 30 days. The bar graph shows the average amount spent per category, while the donut chart displays the total amount spent.
 
-- The Budget Remaining widget's progress bars graphically represent the remaining money in the user's budget. Two more widgets display the average and total amounts spent per category within the specified date range. Everything on the dashboard updates in real time as the user adds a new budget or a new expenditure.
-
-- There are beauty and functionality in simplicity, and the user's flow is kept direct and clean. The user inputs budget and expenditure information in modal window forms that do not take them away from the main dashboard, keeping the user experience focused.
+- The Budget Remaining widget's progress bars graphically represent the remaining money in the user's budget. Two more widgets display the total expense and income spent per category within the specified date range. Everything on the dashboard updates in real time as the user adds a new budget or a new expenditure.
 
 ## Screenshots
-### Accounts
 
 ![Accounts](./screen-shots/transaction-view.png)
 ![Accounts](./screen-shots/report-view.png)
