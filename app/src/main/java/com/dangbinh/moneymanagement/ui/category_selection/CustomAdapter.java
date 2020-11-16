@@ -30,8 +30,7 @@ public class CustomAdapter extends BaseAdapter {
     int[] imageId;
     private static LayoutInflater inflater = null;
     View rowView;
-    private AdapterCallback mAdapterCallback;
-
+    private final AdapterCallback mAdapterCallback;
 
     public interface AdapterCallback {
         void onMethodCallback(String cate);
@@ -42,7 +41,7 @@ public class CustomAdapter extends BaseAdapter {
         this.result = result;
         this.context = activity;
         this.imageId = imageId;
-        this.inflater = (LayoutInflater) context.
+        inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mAdapterCallback = callback;
     }
@@ -65,7 +64,7 @@ public class CustomAdapter extends BaseAdapter {
         return position;
     }
 
-    public class Holder {
+    public static class Holder {
         TextView tv;
         ImageView img;
     }
@@ -74,7 +73,7 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         Holder holder = new Holder();
-        rowView = inflater.inflate(R.layout.list_layout, null);
+        rowView = inflater.inflate(R.layout.list_layout, parent, false);
         holder.tv = rowView.findViewById(R.id.names);
         holder.img = rowView.findViewById(R.id.icon);
         holder.tv.setText(result[position]);
@@ -95,6 +94,7 @@ public class CustomAdapter extends BaseAdapter {
 
         switch (cat) {
             case "Interest Received":
+            case "Loan":
                 value = R.mipmap.ic_loan;
                 break;
             case "Debt":
@@ -108,9 +108,6 @@ public class CustomAdapter extends BaseAdapter {
                 break;
             case "Health":
                 value = R.mipmap.ic_health;
-                break;
-            case "Loan":
-                value = R.mipmap.ic_loan;
                 break;
             case "Shopping":
                 value = R.mipmap.ic_shopping;
@@ -150,10 +147,9 @@ public class CustomAdapter extends BaseAdapter {
                 Path.Direction.CCW);
 
         canvas.clipPath(path);
-        Bitmap sourceBitmap = scaleBitmapImage;
-        canvas.drawBitmap(sourceBitmap,
-                new Rect(0, 0, sourceBitmap.getWidth(),
-                        sourceBitmap.getHeight()),
+        canvas.drawBitmap(scaleBitmapImage,
+                new Rect(0, 0, scaleBitmapImage.getWidth(),
+                        scaleBitmapImage.getHeight()),
                 new Rect(0, 0, targetWidth, targetHeight), null);
         return targetBitmap;
     }
