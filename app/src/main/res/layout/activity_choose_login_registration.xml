@@ -10,46 +10,55 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
+        android:layout_width="351dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/custom"
         android:text="get started"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="561dp" />
+        app:layout_constraintBottom_toTopOf="@+id/register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/register"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
+        android:layout_width="351dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="72dp"
         android:background="@drawable/custom"
         android:text="register"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="619dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="379dp"
-        android:layout_height="47dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="64dp"
         android:gravity="center"
         android:text="Love cures people. Both the ones who give it and the ones who receive it."
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="444dp" />
+        app:layout_constraintBottom_toTopOf="@+id/login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="184dp"
         android:text="Dinder"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="60sp"
-        tools:layout_editor_absoluteX="119dp"
-        tools:layout_editor_absoluteY="176dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
