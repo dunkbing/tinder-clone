@@ -1,14 +1,18 @@
-package com.dangbinh.dinter.Matches;
+package com.dangbinh.dinter.matches;
 
 /**
  * Created by dangbinh on 18/11/2020.
  */
 
-public class MatchesObject {
+public class MatchObject {
     private String userId;
     private String name;
     private String profileImageUrl;
-    public MatchesObject (String userId, String name, String profileImageUrl){
+
+    public MatchObject() {
+    }
+
+    public MatchObject(String userId, String name, String profileImageUrl){
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
@@ -17,7 +21,7 @@ public class MatchesObject {
     public String getUserId(){
         return userId;
     }
-    public void setUserId(String userID){
+    public void setUserId(String userId){
         this.userId = userId;
     }
 

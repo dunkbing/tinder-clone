@@ -1,9 +1,11 @@
-package com.dangbinh.dinter.Matches;
+package com.dangbinh.dinter.matches;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,12 +18,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.dangbinh.dinter.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MatchesActivity extends AppCompatActivity {
-    private RecyclerView.Adapter<MatchesViewHolders> mMatchesAdapter;
+public class MatchActivity extends AppCompatActivity {
+    private MatchAdapter mMatchesAdapter;
 
     private String currentUserID;
+    MatchViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,26 +31,33 @@ public class MatchesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_matches);
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        viewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
+                .create(MatchViewModel.class);
+        mMatchesAdapter = new MatchAdapter(MatchActivity.this);
+        viewModel.getMatches().observe(this, matchesObjects -> {
+            mMatchesAdapter.setMatchesList(matchesObjects);
+            Log.d("MatchesActivity", matchesObjects.size()+"");
+        });
 
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mMatchesLayoutManager = new LinearLayoutManager(MatchesActivity.this);
+        RecyclerView.LayoutManager mMatchesLayoutManager = new LinearLayoutManager(MatchActivity.this);
         mRecyclerView.setLayoutManager(mMatchesLayoutManager);
-        mMatchesAdapter = new MatchesAdapter(getDataSetMatches(), MatchesActivity.this);
         mRecyclerView.setAdapter(mMatchesAdapter);
 
-        getUserMatchId();
+        // getUserMatchId();
     }
 
     private void getUserMatchId() {
-        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("connections").child("matches");
+        DatabaseReference matchDb = FirebaseDatabase.getInstance()
+                .getReference().child("Users").child(currentUserID).child("connections").child("matches");
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     for(DataSnapshot match : dataSnapshot.getChildren()){
-                        FetchMatchInformation(match.getKey());
+                        // FetchMatchInformation(match.getKey());
                     }
                 }
             }
@@ -69,15 +78,14 @@ public class MatchesActivity extends AppCompatActivity {
                     String userId = dataSnapshot.getKey();
                     String name = "";
                     String profileImageUrl = "";
-                    if(dataSnapshot.child("name").getValue()!=null){
+                    if(dataSnapshot.child("name").getValue() != null){
                         name = dataSnapshot.child("name").getValue().toString();
                     }
                     if(dataSnapshot.child("profileImageUrl").getValue()!=null){
                         profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
                     }
 
-
-                    MatchesObject obj = new MatchesObject(userId, name, profileImageUrl);
+                    MatchObject obj = new MatchObject(userId, name, profileImageUrl);
                     resultsMatches.add(obj);
                     mMatchesAdapter.notifyDataSetChanged();
                 }
@@ -91,9 +99,9 @@ public class MatchesActivity extends AppCompatActivity {
 
     }
 
-    private final ArrayList<MatchesObject> resultsMatches = new ArrayList<MatchesObject>();
-    private List<MatchesObject> getDataSetMatches() {
+    private final ArrayList<MatchObject> resultsMatches = new ArrayList<MatchObject>();
+    /*private List<MatchesObject> getDataSetMatches() {
         return resultsMatches;
-    }
+    }*/
 
 }
