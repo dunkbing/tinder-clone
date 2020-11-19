@@ -8,6 +8,7 @@ public class CardItem {
     private String userId;
     private String name;
     private String profileImageUrl;
+    private String profile;
     public CardItem(String userId, String name, String profileImageUrl){
         this.userId = userId;
         this.name = name;
@@ -17,7 +18,7 @@ public class CardItem {
     public String getUserId(){
         return userId;
     }
-    public void setUserID(String userID){
+    public void setUserId(String userId){
         this.userId = userId;
     }
 
@@ -33,5 +34,13 @@ public class CardItem {
     }
     public void setProfileImageUrl(String profileImageUrl){
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 }
