@@ -1,14 +1,14 @@
-package com.dangbinh.dinter.Matches;
+package com.dangbinh.dinter.Cards;
 
 /**
- * Created by manel on 10/31/2017.
+ * Created by manel on 9/5/2017.
  */
 
-public class MatchesObject {
+public class cards {
     private String userId;
     private String name;
     private String profileImageUrl;
-    public MatchesObject (String userId, String name, String profileImageUrl){
+    public cards (String userId, String name, String profileImageUrl){
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;

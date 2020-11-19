@@ -1,8 +1,8 @@
 package com.dangbinh.dinter.Matches;
 
+
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,33 +19,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MatchesActivity extends AppCompatActivity {
-    private RecyclerView.Adapter<MatchesViewHolders> mMatchesAdapter;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mMatchesAdapter;
+    private RecyclerView.LayoutManager mMatchesLayoutManager;
 
-    private String currentUserID;
+    private String cusrrentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches);
 
-        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        cusrrentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mMatchesLayoutManager = new LinearLayoutManager(MatchesActivity.this);
+        mMatchesLayoutManager = new LinearLayoutManager(MatchesActivity.this);
         mRecyclerView.setLayoutManager(mMatchesLayoutManager);
         mMatchesAdapter = new MatchesAdapter(getDataSetMatches(), MatchesActivity.this);
         mRecyclerView.setAdapter(mMatchesAdapter);
 
         getUserMatchId();
+
+
+
+
+
     }
 
     private void getUserMatchId() {
-        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID).child("connections").child("matches");
+
+        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(cusrrentUserID).child("connections").child("matches");
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     for(DataSnapshot match : dataSnapshot.getChildren()){
                         FetchMatchInformation(match.getKey());
@@ -54,7 +62,7 @@ public class MatchesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
@@ -64,7 +72,7 @@ public class MatchesActivity extends AppCompatActivity {
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     String userId = dataSnapshot.getKey();
                     String name = "";
@@ -84,14 +92,14 @@ public class MatchesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
 
     }
 
-    private final ArrayList<MatchesObject> resultsMatches = new ArrayList<MatchesObject>();
+    private ArrayList<MatchesObject> resultsMatches = new ArrayList<MatchesObject>();
     private List<MatchesObject> getDataSetMatches() {
         return resultsMatches;
     }

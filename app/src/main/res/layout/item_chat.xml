@@ -6,13 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20sp"
-        android:id="@+id/item_chat_container">
+        android:id="@+id/container">
         <TextView
             android:paddingBottom="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Text"
-            android:id="@+id/text_view_message"/>
+            android:id="@+id/message"/>
 
     </LinearLayout>
 

@@ -8,7 +8,7 @@
         android:layout_width="50sp"
         android:layout_height="50sp"
         android:src="@mipmap/ic_launcher"
-        android:id="@+id/image_view_match"/>
+        android:id="@+id/MatchImage"/>
     <LinearLayout
         android:paddingLeft="20sp"
         android:layout_width="match_parent"
@@ -20,13 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Match's Name"
-            android:id="@+id/text_view_match_name"/>
+            android:id="@+id/MatchName"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Match's ID"
             android:layout_gravity="center"
-            android:id="@+id/text_view_match_id"/>
+            android:id="@+id/Matchid"/>
     </LinearLayout>
 
 

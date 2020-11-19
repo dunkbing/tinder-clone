@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,16 +9,16 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/send_layout">
+        android:layout_above="@+id/sendLayout">
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/recycler_view"
+            android:id="@+id/recyclerView"
             android:scrollbars="vertical">
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.core.widget.NestedScrollView>
     <LinearLayout
-        android:id="@+id/send_layout"
+        android:id="@+id/sendLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -26,14 +28,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="message..."
-            android:id="@+id/edit_text_message"
+            android:id="@+id/message"
             />
         <Button
             android:layout_weight="0.2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Send"
-            android:id="@+id/button_send"/>
+            android:id="@+id/send"/>
     </LinearLayout>
 
 </RelativeLayout>

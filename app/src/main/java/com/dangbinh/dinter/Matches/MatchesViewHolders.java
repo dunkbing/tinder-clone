@@ -12,7 +12,7 @@ import com.dangbinh.dinter.Chat.ChatActivity;
 import com.dangbinh.dinter.R;
 
 /**
- * Created by dangbinh on 18/11/2020.
+ * Created by manel on 10/31/2017.
  */
 
 public class MatchesViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -22,9 +22,10 @@ public class MatchesViewHolders extends RecyclerView.ViewHolder implements View.
         super(itemView);
         itemView.setOnClickListener(this);
 
-        mMatchId = itemView.findViewById(R.id.text_view_match_id);
-        mMatchName = itemView.findViewById(R.id.text_view_match_name);
-        mMatchImage = itemView.findViewById(R.id.image_view_match);
+        mMatchId = (TextView) itemView.findViewById(R.id.Matchid);
+        mMatchName = (TextView) itemView.findViewById(R.id.MatchName);
+
+        mMatchImage = (ImageView) itemView.findViewById(R.id.MatchImage);
     }
 
     @Override

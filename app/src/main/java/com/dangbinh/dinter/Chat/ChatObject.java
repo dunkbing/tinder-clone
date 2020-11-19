@@ -1,16 +1,12 @@
 package com.dangbinh.dinter.Chat;
 
 /**
- * Created by dangbinh on 18/11/2020.
+ * Created by manel on 10/31/2017.
  */
 
 public class ChatObject {
     private String message;
     private Boolean currentUser;
-
-    public ChatObject() {
-    }
-
     public ChatObject(String message, Boolean currentUser){
         this.message = message;
         this.currentUser = currentUser;
@@ -19,7 +15,7 @@ public class ChatObject {
     public String getMessage(){
         return message;
     }
-    public void setMessage(String message){
+    public void setMessage(String userID){
         this.message = message;
     }
 

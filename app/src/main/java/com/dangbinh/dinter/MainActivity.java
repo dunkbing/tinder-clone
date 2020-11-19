@@ -18,16 +18,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
-import com.dangbinh.dinter.card.CardItemAdapter;
-import com.dangbinh.dinter.card.CardItem;
+import com.dangbinh.dinter.Cards.arrayAdapter;
+import com.dangbinh.dinter.Cards.cards;
 import com.dangbinh.dinter.Matches.MatchesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private CardItem cards_data[];
-    private CardItemAdapter arrayAdapter;
+    private cards cards_data[];
+    private com.dangbinh.dinter.Cards.arrayAdapter arrayAdapter;
     private int i;
 
     private FirebaseAuth mAuth;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     ListView listView;
-    List<CardItem> rowItems;
+    List<cards> rowItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         checkUserSex();
 
-        rowItems = new ArrayList<CardItem>();
+        rowItems = new ArrayList<cards>();
 
-        arrayAdapter = new CardItemAdapter(this, R.layout.card_item, rowItems );
+        arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems );
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLeftCardExit(Object dataObject) {
 
-                CardItem obj = (CardItem) dataObject;
+                cards obj = (cards) dataObject;
                 String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("nope").child(currentUId).setValue(true);
                 Toast.makeText(MainActivity.this, "Left", Toast.LENGTH_SHORT).show();
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                CardItem obj = (CardItem) dataObject;
+                cards obj = (cards) dataObject;
                 String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("yeps").child(currentUId).setValue(true);
                 isConnectionMatch(userId);
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!dataSnapshot.child("profileImageUrl").getValue().equals("default")) {
                             profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
                         }
-                        CardItem item = new CardItem(dataSnapshot.getKey(), dataSnapshot.child("name").getValue().toString(), profileImageUrl);
+                        cards item = new cards(dataSnapshot.getKey(), dataSnapshot.child("name").getValue().toString(), profileImageUrl);
                         rowItems.add(item);
                         arrayAdapter.notifyDataSetChanged();
                     }

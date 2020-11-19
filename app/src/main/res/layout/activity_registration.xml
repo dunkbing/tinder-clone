@@ -1,42 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dangbinh.dinter.RegistrationActivity"
-    android:orientation="vertical">
+    android:background="@drawable/backgroud"
+    tools:context="com.dangbinh.dinter.RegistrationActivity">
+
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:layout_width="309dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="68dp"
         android:hint="name"
-        android:id="@+id/name"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/radioGroup">
+        android:id="@+id/radioGroup"
+        android:layout_width="301dp"
+        android:layout_height="101dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.427"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name">
+
         <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Male" />
+            android:id="@+id/radioButton"
+            android:layout_width="71dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="168dp"
+            android:text="Male"
+            app:layout_constraintBottom_toTopOf="@+id/email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            app:layout_constraintVertical_bias="0.642" />
+
         <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Female" />
+            android:id="@+id/radioButton2"
+            android:layout_width="86dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="21dp"
+            android:text="Female"
+            app:layout_constraintBottom_toTopOf="@+id/email"
+            app:layout_constraintEnd_toStartOf="@+id/radioButton"
+            app:layout_constraintHorizontal_bias="0.621"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            app:layout_constraintVertical_bias="0.0" />
     </RadioGroup>
+
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/email"
+        android:layout_width="309dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="156dp"
         android:hint="email"
-        android:id="@+id/email"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/password"
+        android:layout_width="309dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="12dp"
         android:hint="password"
-        android:id="@+id/password"/>
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        app:layout_constraintVertical_bias="0.046" />
+
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/register"
+        android:layout_width="309dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="84dp"
+        android:background="@drawable/custom"
+        android:baselineAligned="false"
         android:text="Register"
-        android:id="@+id/register"/>
-</LinearLayout>
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintVertical_bias="0.938" />
+</androidx.constraintlayout.widget.ConstraintLayout>

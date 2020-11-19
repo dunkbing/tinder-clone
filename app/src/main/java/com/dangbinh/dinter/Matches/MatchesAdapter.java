@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -14,27 +13,28 @@ import com.dangbinh.dinter.R;
 import java.util.List;
 
 /**
- * Created by dangbinh on 18/11/2020.
+ * Created by manel on 10/31/2017.
  */
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>{
-    private final List<MatchesObject> matchesList;
-    private final Context context;
+    private List<MatchesObject> matchesList;
+    private Context context;
+
 
     public MatchesAdapter(List<MatchesObject> matchesList, Context context){
         this.matchesList = matchesList;
         this.context = context;
     }
 
-    @NonNull
     @Override
     public MatchesViewHolders onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_matches, parent, false);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_matches, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
+        MatchesViewHolders rcv = new MatchesViewHolders(layoutView);
 
-        return new MatchesViewHolders(layoutView);
+        return rcv;
     }
 
     @Override
