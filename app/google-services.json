@@ -1,71 +1,42 @@
 {
   "project_info": {
-    "project_number": "578453658863",
-    "firebase_url": "https://prm391-demo.firebaseio.com",
-    "project_id": "prm391-demo",
-    "storage_bucket": "prm391-demo.appspot.com"
+    "project_number": "597745015317",
+    "firebase_url": "https://song-ma-plus.firebaseio.com",
+    "project_id": "song-ma-plus",
+    "storage_bucket": "song-ma-plus.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:578453658863:android:1adf4e448ff92867d30f1a",
+        "mobilesdk_app_id": "1:597745015317:android:bf007a8f8ad784e670cc1c",
         "android_client_info": {
-          "package_name": "com.dangbinh.moneymanagement"
+          "package_name": "com.dangbinh.dinter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "578453658863-ac2k9f64o2fsr3i88i876o9075pj76ou.apps.googleusercontent.com",
+          "client_id": "597745015317-0efubggpat4gd1e3u38h50dmjf04ij02.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.dangbinh.moneymanagement",
+            "package_name": "com.dangbinh.dinter",
             "certificate_hash": "67aa93e1fab1ad12fb093228846e90fa0b745a58"
           }
         },
         {
-          "client_id": "578453658863-3pa66m469nrtipnogj3osov914etmjg4.apps.googleusercontent.com",
+          "client_id": "597745015317-7s9egtqnhi823007hm44gutg0f9qehhb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAE9WAYzUvh9GRjVlX7_fGkTQk8S6S44sw"
+          "current_key": "AIzaSyDdpbuQXtnjofsHSQpplVpDaB7wpatyaW0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "578453658863-3pa66m469nrtipnogj3osov914etmjg4.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:578453658863:android:43dc5d6f39d98b21d30f1a",
-        "android_client_info": {
-          "package_name": "com.example.phrasalverblearning"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "578453658863-3pa66m469nrtipnogj3osov914etmjg4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAE9WAYzUvh9GRjVlX7_fGkTQk8S6S44sw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "578453658863-3pa66m469nrtipnogj3osov914etmjg4.apps.googleusercontent.com",
+              "client_id": "597745015317-7s9egtqnhi823007hm44gutg0f9qehhb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
