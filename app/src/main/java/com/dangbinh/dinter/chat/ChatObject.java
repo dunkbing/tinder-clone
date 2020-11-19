@@ -1,4 +1,4 @@
-package com.dangbinh.dinter.Chat;
+package com.dangbinh.dinter.chat;
 
 /**
  * Created by dangbinh on 18/11/2020.
