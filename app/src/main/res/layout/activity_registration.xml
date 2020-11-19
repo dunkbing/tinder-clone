@@ -10,21 +10,25 @@
 
     <EditText
         android:id="@+id/name"
-        android:layout_width="309dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="68dp"
-        android:hint="name"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="116dp"
+        android:drawableStart="@drawable/ic_baseline_account_circle_24"
+        android:hint="  name"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="301dp"
-        android:layout_height="101dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="310dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.427"
+        app:layout_constraintHorizontal_bias="0.742"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name">
 
@@ -34,6 +38,8 @@
             android:layout_height="32dp"
             android:layout_marginEnd="168dp"
             android:text="Male"
+            android:textColor="#ECEBEB"
+            android:textColorHint="#FFFFFF"
             app:layout_constraintBottom_toTopOf="@+id/email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name"
@@ -46,6 +52,8 @@
             android:layout_marginTop="36dp"
             android:layout_marginBottom="21dp"
             android:text="Female"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
             app:layout_constraintBottom_toTopOf="@+id/email"
             app:layout_constraintEnd_toStartOf="@+id/radioButton"
             app:layout_constraintHorizontal_bias="0.621"
@@ -56,35 +64,42 @@
 
     <EditText
         android:id="@+id/email"
-        android:layout_width="309dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="156dp"
-        android:hint="email"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:drawableStart="@drawable/ic_baseline_email"
+        android:hint="  email"
+        android:layout_marginTop="144dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="309dp"
-        android:layout_height="55dp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_marginTop="12dp"
-        android:hint="password"
+        android:drawableStart="@drawable/ic_baseline_account_circle_24"
+
+        android:hint="  password"
         android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
-        app:layout_constraintVertical_bias="0.046" />
+        app:layout_constraintVertical_bias="0.053" />
 
     <Button
         android:id="@+id/register"
-        android:layout_width="309dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="84dp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:background="@drawable/custom"
+        android:layout_marginBottom="84dp"
         android:baselineAligned="false"
         android:text="Register"
         android:textColor="#FFFFFF"

@@ -3,30 +3,37 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="20sp">
+    android:padding="20sp"
+    android:background="@drawable/backgroud">
     <ImageView
         android:layout_width="50sp"
         android:layout_height="50sp"
         android:src="@mipmap/ic_launcher"
         android:id="@+id/MatchImage"/>
+
     <LinearLayout
-        android:paddingLeft="20sp"
-        android:layout_width="match_parent"
+        android:layout_width="306dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_gravity="center">
+        android:paddingLeft="20sp">
+
         <TextView
+            android:id="@+id/MatchName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingBottom="20sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="Match's Name"
-            android:id="@+id/MatchName"/>
+            android:textColor="#FFFFFF" />
+
         <TextView
+            android:id="@+id/Matchid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Match's ID"
             android:layout_gravity="center"
-            android:id="@+id/Matchid"/>
+            android:text="Match's ID"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
     </LinearLayout>
 
 
