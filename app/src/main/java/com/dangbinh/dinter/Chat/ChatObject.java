@@ -7,6 +7,10 @@ package com.dangbinh.dinter.Chat;
 public class ChatObject {
     private String message;
     private Boolean currentUser;
+
+    public ChatObject() {
+    }
+
     public ChatObject(String message, Boolean currentUser){
         this.message = message;
         this.currentUser = currentUser;
