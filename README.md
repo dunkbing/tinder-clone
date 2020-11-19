@@ -1,37 +1,72 @@
-# Tinder_android_app_clone
+# PRM391
+## Group members
+* Bui Dang Binh
+* Nguyen Minh
+* Do Quang Minh
+* Tu Anh Nguyen
 
-▷ Create an android app like tinder
+## Overview
+- This application will help individuals meet and date singles in their area.
+- It allows users to like(swipe right), or dislike(swipe left) other users, and allows users to chat if both parties liked each other in the app.
 
-▷ Full Video Tutorial Playlist here: https://www.youtube.com/playlist?list=PLxabZQCAe5fio9dm1Vd0peIY6HLfo5MCf
+## Functional requirement
+- **Sign-in**: Users don’t want to waste too much time with long registration. So that, we created a quick sign-in feature via Facebook/Instagram, email, and/or phone number. Make sure that their personal data is fully protected.
+- **Dating profile**: The users’ profile can be edited and added a person’s information such as age, location, brief description, interests, and hobbies. This is also important to arrange the profile sections in a simple and convenient way to show how **vjp pro** you are, and to help other users make decisions without hesitation.
+- **Discover people / Matching**: Naturally, people prefer relationships in which they can meet the partner in person without too much trouble. Not everyone wants to text someone who is located miles away as it is less likely to meet them. The great option is people living in the same city or at least the same state.
+- **Private messaging**: After users match each other, they can start chatting and get to know each other better. That’s what we use dating apps for. The dating app needs to fulfill their need to know partners with chat, video calls, upload pictures, other profiles. To improve the experience of using a dating app, Dinter considers implementing GIFS, symbols, stickers, or video calls for more advanced communication (in the future).
 
-▷ Tools Used In this Project:
-- Android Studio;
-- Firebase:
-    *Realtime database
-    *Authentication
- - SwipeCards;
+## Technologies
 
-▷ In this project we've done:<br />
-1 - SwipeCards Implementation;<br />
+**Tech Stack:**
 
-▷ If you have any question please ask, I'll try to answer to every question and even look at your code if that is necessary.
+- Java/Android Studio
+- Firebase (Realtime database/cloud storage)
 
+## Data Structure
 
-PS: If ou're going to download the full project please use your on firebase API, the one in the project will NOT be mantained and the app may not work.
+App's data is stored in the firebase realtime db (JSON format) and on the user's phone with SQLite. Local backups of your project file are made automatically each month.
 
+### Account
+**Users**
+```javascript
+{
+  id: String, // auto-generated
+  name: String,
+  profile: String,
+  profileImageUrl: String,
+  gender: String,
+  connections: {
+      nopes: Array<userId: String>,
+      yeps: Array<userId: String>,
+      matches: Array<{userId: String, chatId: String}>
+  }
+}
+```
 
-# Implementation Guide
+### Chat
 
-**1 - Project**<br />
-1 - Open the Project in your android studio;<br />
-2 - !!!!IMPORTANT!!!! Change the Package Name. You can check how to do that here (https://stackoverflow.com/questions/16804093/android-studio-rename-package)<br />
+```javascript
+{
+  id: String, // auto-generated
+  message: {
+      messageId: String,
+      content: String,
+      userId: String
+  }
+}
+```
 
+## Screenshots
 
-**2 - Firebase Panel**<br />
-1 - Create Firebase Project (https://console.firebase.google.com/);<br />
-2 - import the file google-service.json into your project as the instructions say;<br />
-3 - Go to Firebase -> Registration and activate Login/Registrtion with email<br />
-4 - Go to Firebase -> storage and activate it;<br />
+![Accounts](./screen-shots/transaction-view.png)
+![Accounts](./screen-shots/report-view.png)
+![Accounts](./screen-shots/login.png)
+![Accounts](./screen-shots/register.png)
 
+## For Version 2.0
 
-**!!!DONE!!!**
+- **Social network connection:** Ability to connect to other social network platform
+- **GIFS, symbols, stickers, or video calls**
+- **Premium/Payment platform**
+- **Password hashing:** Passwords will be hashed before being saved to the database
+- **Push notifications**
