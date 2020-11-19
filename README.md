@@ -58,10 +58,13 @@ App's data is stored in the firebase realtime db (JSON format) and on the user's
 
 ## Screenshots
 
-![Accounts](./screen-shots/transaction-view.png)
-![Accounts](./screen-shots/report-view.png)
-![Accounts](./screen-shots/login.png)
-![Accounts](./screen-shots/register.png)
+![architecture](./doc/architecture.png)
+![hello](./doc/hello.png)
+![login](./doc/login.png)
+![register](./doc/register.png)
+![main](./doc/main.png)
+![matches](./doc/matches.png)
+![setting](./doc/setting.png)
 
 ## For Version 2.0
 
