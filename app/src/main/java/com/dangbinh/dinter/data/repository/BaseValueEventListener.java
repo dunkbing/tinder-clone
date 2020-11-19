@@ -1,8 +1,8 @@
-package com.dangbinh.dinter.repository;
+package com.dangbinh.dinter.data.repository;
 
-import androidx.annotation.NonNull;
+import android.util.Log;
 
-import com.dangbinh.dinter.mapper.FirebaseMapper;
+import com.dangbinh.dinter.data.mapper.FirebaseMapper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -21,6 +21,7 @@ public class BaseValueEventListener<Model, Entity> implements ValueEventListener
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
+        Log.d("BaseValueEventListener", dataSnapshot.toString());
         List<Model> data = mapper.mapList(dataSnapshot);
         callback.onSuccess(data);
     }

@@ -1,4 +1,4 @@
-package com.dangbinh.dinter.mapper;
+package com.dangbinh.dinter.data.mapper;
 
 import android.util.Log;
 
