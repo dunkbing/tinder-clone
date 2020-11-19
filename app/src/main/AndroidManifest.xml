@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dangbinh.moneymanagement">
+    package="com.dangbinh.dinter">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,48 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ReportActivity"
-            android:label="Report"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.LoginActivity"
-            android:label="Login"
-            android:noHistory="true">
+        <activity android:name="com.dangbinh.dinter.MainActivity" />
+        <activity android:name="com.dangbinh.dinter.ChooseLoginRegistrationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.RegisterActivity"
-            android:label="@string/title_activity_register"
-            android:parentActivityName=".ui.LoginActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dangbinh.moneymanagement.ui.LoginActivity" />
-        </activity>
-        <activity
-            android:name=".ui.ForgotPasswordActivity"
-            android:label="@string/title_activity_forgot_pass"
-            android:parentActivityName=".ui.LoginActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dangbinh.moneymanagement.ui.LoginActivity" />
-        </activity>
-        <activity
-            android:name=".ui.TransactionsViewActivity"
-            android:label="@string/title_activity_transcations_view"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.AddTransactionActivity"
-            android:label="@string/title_add_transcations_view" />
-        <activity
-            android:name=".ui.category_selection.CategorySelectionMainActivity"
-            android:label="Select Category"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.TaxEstimatorActivity" />
+        <activity android:name="com.dangbinh.dinter.RegistrationActivity" />
+        <activity android:name="com.dangbinh.dinter.LoginActivity" />
+        <activity android:name="com.dangbinh.dinter.SettingsActivity" />
+        <activity android:name="com.dangbinh.dinter.Matches.MatchesActivity" />
+        <activity android:name="com.dangbinh.dinter.Chat.ChatActivity"></activity>
     </application>
 
 </manifest>
