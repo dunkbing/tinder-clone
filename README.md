@@ -59,18 +59,13 @@ App's data is stored in the firebase realtime db (JSON format) and on the user's
 
 ## Features
 
-The interactive dashboard features graphs, which segment the user’s expenditures into categories, and auto-updating widgets, which illustrate spending metrics and statistics. The user enters budgets for categories along with a date range that is used to display spending stats over that particular time period.
+- The interactive dashboard features graphs, which segment the user’s expenditures into categories, and auto-updating widgets, which illustrate spending metrics and statistics. The user enters budgets for categories along with a date range that is used to display spending stats over that particular time period.
 
-The bar graph show stats based on the user's spending habits within the last 30 days. The bar graph shows the average amount spent per category, while the donut chart displays the total amount spent.
+- The bar graph show stats based on the user's spending habits within the last 30 days. The bar graph shows the average amount spent per category, while the donut chart displays the total amount spent.
 
-The Budget Remaining widget's progress bars graphically represent the remaining money in the user's budget. Two more widgets display the average and total amounts spent per category within the specified date range. Everything on the dashboard updates in real time as the user adds a new budget or a new expenditure.
-
-Spent's dynamic package tracking feature monitors online purchases, which displays the last place a package was scanned, its delivery status, and plots its current location on a map. When the user saves a new purchase, they are given the option to input tracking information. If the user has tracking information saved, a paper airplane icon is displayed next to the corresponding purchase, and the user simply has to click on the icon to track their package.
-
-Spent is a one-page dashboard. There is beauty and functionality in simplicity, and the user's flow is kept direct and clean. The user inputs budget and expenditure information in modal window forms that do not take them away from the main dashboard, keeping the user experience focused.
+- The Budget Remaining widget's progress bars graphically represent the remaining money in the user's budget. Two more widgets display the total expense and income spent per category within the specified date range. Everything on the dashboard updates in real time as the user adds a new budget or a new expenditure.
 
 ## Screenshots
-### Accounts
 
 ![Accounts](./screen-shots/transaction-view.png)
 ![Accounts](./screen-shots/report-view.png)
