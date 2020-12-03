@@ -166,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
                             profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
                         }
                         CardItem item = new CardItem(dataSnapshot.getKey(), dataSnapshot.child("name").getValue().toString(), profileImageUrl);
-                        item.setProfile(dataSnapshot.child("profile").getValue().toString());
+                        if (dataSnapshot.child("profile").getValue() != null)
+                            item.setProfile(dataSnapshot.child("profile").getValue().toString());
                         rowItems.add(item);
                         arrayAdapter.notifyDataSetChanged();
                     }
