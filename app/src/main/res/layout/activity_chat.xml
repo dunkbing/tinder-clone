@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dangbinh.dinter.Chat.ChatActivity">
+    android:background="@drawable/background"
+    tools:context="com.dangbinh.dinter.chat.ChatActivity">
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/send_layout">
+        android:layout_above="@+id/send_layout"
+        android:layout_marginBottom="-3dp">
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -15,25 +21,37 @@
             android:scrollbars="vertical">
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.core.widget.NestedScrollView>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/send_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_height="86dp"
+        android:layout_alignParentBottom="true">
         <EditText
-            android:layout_weight="0.8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="message..."
             android:id="@+id/edit_text_message"
-            />
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:background="@drawable/input"
+            android:drawableStart="@drawable/ic_baseline_email"
+            android:drawablePadding="12dp"
+            android:hint="message..."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_send"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <Button
-            android:layout_weight="0.2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="76dp"
+            android:layout_height="47dp"
+            android:background="@drawable/custom"
             android:text="Send"
-            android:id="@+id/button_send"/>
-    </LinearLayout>
+            android:id="@+id/button_send"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_text_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_message" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

@@ -5,6 +5,7 @@
     android:layout_gravity="center"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/background"
     android:paddingLeft="40sp"
     android:paddingRight="40sp"
     android:paddingTop="20sp"
@@ -21,25 +22,43 @@
         android:id="@+id/cardView">
         <LinearLayout
             android:layout_gravity="center"
-            android:layout_width="300dp"
-            android:layout_height="350dp"
+            android:layout_width="340dp"
+            android:layout_height="480dp"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="350dp"
                 android:id="@+id/image"
                 android:scaleType="centerCrop"
                 />
             <TextView
                 android:id="@+id/name"
                 android:textSize="30sp"
-                android:paddingLeft="20sp"
+                android:paddingStart="20sp"
                 android:textColor="@android:color/black"
-                android:gravity="center|left"
+                android:gravity="center|start"
                 tools:text="hello"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_view_measure"
+                android:textSize="20sp"
+                android:paddingStart="20sp"
+                android:textColor="@android:color/black"
+                android:gravity="center|start"
+                tools:text="hello"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_view_joined"
+                android:textSize="20sp"
+                android:paddingStart="20sp"
+                android:textColor="@android:color/black"
+                android:gravity="center|start"
+                tools:text="hello"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

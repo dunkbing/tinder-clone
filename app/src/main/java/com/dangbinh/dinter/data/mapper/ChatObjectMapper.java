@@ -1,8 +1,8 @@
-package com.dangbinh.dinter.mapper;
+package com.dangbinh.dinter.data.mapper;
 
 import android.util.Log;
 
-import com.dangbinh.dinter.Chat.ChatObject;
+import com.dangbinh.dinter.chat.ChatObject;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 

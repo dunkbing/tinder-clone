@@ -22,8 +22,8 @@
         <activity android:name="com.dangbinh.dinter.RegistrationActivity" />
         <activity android:name="com.dangbinh.dinter.LoginActivity" />
         <activity android:name="com.dangbinh.dinter.SettingsActivity" />
-        <activity android:name="com.dangbinh.dinter.Matches.MatchesActivity" />
-        <activity android:name="com.dangbinh.dinter.Chat.ChatActivity"></activity>
+        <activity android:name=".matches.MatchActivity" />
+        <activity android:name="com.dangbinh.dinter.chat.ChatActivity"></activity>
     </application>
 
 </manifest>

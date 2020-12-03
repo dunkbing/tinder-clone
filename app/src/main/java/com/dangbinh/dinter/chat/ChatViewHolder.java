@@ -1,4 +1,4 @@
-package com.dangbinh.dinter.Chat;
+package com.dangbinh.dinter.chat;
 
 import android.view.View;
 import android.widget.LinearLayout;
@@ -12,10 +12,10 @@ import com.dangbinh.dinter.R;
  * Created by dangbinh on 18/11/2020.
  */
 
-public class ChatViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     public TextView mMessage;
     public LinearLayout mContainer;
-    public ChatViewHolders(View itemView) {
+    public ChatViewHolder(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dangbinh.dinter.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -30,11 +31,22 @@ public class CardItemAdapter extends ArrayAdapter<CardItem>{
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.card_item, parent, false);
         }
-
+        String[] profiles = cardItem.getProfile().split("\n");
+        String bornStr = profiles[0];
+        String joined = profiles[2];
         TextView name = convertView.findViewById(R.id.name);
+        TextView measure = convertView.findViewById(R.id.text_view_measure);
+        TextView textViewJoined = convertView.findViewById(R.id.text_view_joined);
         ImageView image = convertView.findViewById(R.id.image);
-
-        name.setText(cardItem.getName());
+        int born = 0;
+        try {
+            born = Integer.parseInt(bornStr.substring(bornStr.length() - 4));
+            name.setText(String.format("%s(%d)", cardItem.getName(), Calendar.getInstance().get(Calendar.YEAR)-born));
+        } catch (Exception e) {
+            name.setText(String.format("%s", cardItem.getName()));
+        }
+        measure.setText(profiles[1].replace("Measurements: ", ""));
+        textViewJoined.setText(String.format("Joined: %s", joined.substring(joined.length() - 4)));
         if ("default".equals(cardItem.getProfileImageUrl())) {
             Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
         } else {

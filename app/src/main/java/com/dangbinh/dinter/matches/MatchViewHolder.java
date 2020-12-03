@@ -1,4 +1,4 @@
-package com.dangbinh.dinter.Matches;
+package com.dangbinh.dinter.matches;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,17 +8,17 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dangbinh.dinter.Chat.ChatActivity;
+import com.dangbinh.dinter.chat.ChatActivity;
 import com.dangbinh.dinter.R;
 
 /**
  * Created by dangbinh on 18/11/2020.
  */
 
-public class MatchesViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class MatchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     public TextView mMatchId, mMatchName;
     public ImageView mMatchImage;
-    public MatchesViewHolders(View itemView) {
+    public MatchViewHolder(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
 

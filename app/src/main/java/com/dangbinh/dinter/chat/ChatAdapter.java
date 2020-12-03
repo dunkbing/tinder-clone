@@ -1,4 +1,4 @@
-package com.dangbinh.dinter.Chat;
+package com.dangbinh.dinter.chat;
 
 import android.graphics.Color;
 import android.util.Log;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by dangbinh on 18/11/2020.
  */
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
+public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>{
     private List<ChatObject> chatList = new ArrayList<>();
 
     public ChatAdapter(){
@@ -28,15 +28,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
 
     @NonNull
     @Override
-    public ChatViewHolders onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, parent, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
-        return new ChatViewHolders(layoutView);
+        return new ChatViewHolder(layoutView);
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolders holder, int position) {
+    public void onBindViewHolder(ChatViewHolder holder, int position) {
         holder.mMessage.setText(chatList.get(position).getMessage());
         Log.d("ChatAdapter", position+"/"+chatList.size());
 //        Log.d("ChatAdapter", chatList.get(position).getMessage());

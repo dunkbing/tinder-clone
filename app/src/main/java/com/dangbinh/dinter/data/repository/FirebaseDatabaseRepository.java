@@ -1,8 +1,9 @@
-package com.dangbinh.dinter.repository;
+package com.dangbinh.dinter.data.repository;
 
 import android.util.Log;
 
-import com.dangbinh.dinter.mapper.FirebaseMapper;
+import com.dangbinh.dinter.data.mapper.FirebaseMapper;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -15,6 +16,12 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private FirebaseMapper mapper;
 
     protected abstract String getRootNode();
+
+    protected String getCurrentUId() {
+        return FirebaseAuth.getInstance()
+                .getCurrentUser()
+                .getUid();
+    }
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper) {
         databaseReference = FirebaseDatabase.getInstance().getReference(getRootNode());
