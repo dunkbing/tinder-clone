@@ -32,14 +32,19 @@ public class CardItemAdapter extends ArrayAdapter<CardItem>{
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.card_item, parent, false);
         }
         String[] profiles = cardItem.getProfile().split("\n");
-        String born = profiles[0];
+        String bornStr = profiles[0];
         String joined = profiles[2];
         TextView name = convertView.findViewById(R.id.name);
         TextView measure = convertView.findViewById(R.id.text_view_measure);
         TextView textViewJoined = convertView.findViewById(R.id.text_view_joined);
         ImageView image = convertView.findViewById(R.id.image);
-
-        name.setText(String.format("%s(%d)", cardItem.getName(), Calendar.getInstance().get(Calendar.YEAR)-Integer.parseInt(born.substring(born.length() - 4))));
+        int born = 0;
+        try {
+            born = Integer.parseInt(bornStr.substring(bornStr.length() - 4));
+            name.setText(String.format("%s(%d)", cardItem.getName(), Calendar.getInstance().get(Calendar.YEAR)-born));
+        } catch (Exception e) {
+            name.setText(String.format("%s", cardItem.getName()));
+        }
         measure.setText(profiles[1].replace("Measurements: ", ""));
         textViewJoined.setText(String.format("Joined: %s", joined.substring(joined.length() - 4)));
         if ("default".equals(cardItem.getProfileImageUrl())) {
